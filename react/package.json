@@ -1,0 +1,6 @@
+{
+  "name": "vtex.base-store-component",
+  "dependencies": {
+    "react-intl": "^2.8.0"
+  }
+}
