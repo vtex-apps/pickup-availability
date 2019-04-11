@@ -2,29 +2,37 @@ import React, { useState } from 'react'
 import { Input } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
-import TranslatedTitle from './TranslatedTitle'
+import TranslatedTitle from './components/TranslatedTitle'
 
 import styles from './styles.css'
 
-const BaseApp = ({ title }) => {
-  const [inputValue, setValue] = useState(null)
+const Example: StorefrontFunctionComponent<ExampleProps> = ({ title }) => {
+  const [inputValue, setValue] = useState<string | null>(null)
 
   return (
     <div className={`${styles.container} flex flex-column pv6 ph4`}>
       <TranslatedTitle title={title} />
       <div className="t-body pv4">
-        <FormattedMessage id="base.change-value" values={{ value:  inputValue || '' }} />
+        <FormattedMessage
+          id="base.change-value"
+          values={{ value: inputValue || '' }}
+        />
       </div>
-      <Input onChange={e => setValue(e.target.value)} value={inputValue} />
+      <Input
+        value={inputValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
+      />
     </div>
   )
 }
 
-BaseApp.defaultProps = {
-  title: null,
+interface ExampleProps {
+  title?: string
 }
 
-BaseApp.schema = {
+Example.schema = {
   title: 'editor.base-store-component.title',
   description: 'editor.base-store-component.description',
   type: 'object',
@@ -38,4 +46,4 @@ BaseApp.schema = {
   },
 }
 
-export default BaseApp
+export default Example
