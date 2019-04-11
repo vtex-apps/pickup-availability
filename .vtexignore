@@ -1,5 +1,7 @@
-react/__mocks__/
-react/__tests__/
-react/node_modules/
-react/test-setup.js
-svg/
+node_modules
+react/**/__tests__/**
+react/**/__mocks__/**
+react/**/*.test.js
+react/**/*.test.ts
+react/**/*.test.tsx
+coverage/
