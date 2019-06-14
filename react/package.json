@@ -1,15 +1,15 @@
 {
   "scripts": {
     "test": "vtex-test-tools test",
-    "lint": "tsc --noEmit && eslint --ext ts ."
+    "lint": "tsc --noEmit && eslint --ext ts,tsx ."
   },
   "dependencies": {
     "@vtex/css-handles": "^1.0.0",
     "classnames": "^2.2.6",
     "ramda": "^0.26.1",
     "react": "^16.8.3",
-    "react-intl": "^2.7.2",
-    "react-dom": "^16.8.3"
+    "react-dom": "^16.8.3",
+    "react-intl": "^2.7.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -23,9 +23,9 @@
     "@vtex/test-tools": "^0.2.0",
     "apollo-client": "^2.5.1",
     "eslint": "^5.16.0",
-    "eslint-config-vtex": "^10.1.0",
-    "prettier": "^1.16.4",
+    "eslint-config-vtex-react": "^4.1.0",
+    "prettier": "^1.18.2",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "3.3.4000"
+    "typescript": "~3.3.4000"
   }
 }
