@@ -10,7 +10,7 @@ const LocationInputIcon: FC<Props> = ({ onClick }) => {
   return (
     <span
       onClick={onClick}
-      className="pointer vtex-input-icon vtex-input-icon--location c-action-primary"
+      className="pointer c-action-primary"
     >
       <IconLocationInput size={18} viewBox="0 0 18 18" />
     </span>

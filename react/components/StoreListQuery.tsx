@@ -10,8 +10,8 @@ import SeeAllStoresModal from './SeeAllStoresModal'
 import StoreList from './StoreList'
 import ItemLoader from './Loaders/ItemLoader'
 
-interface SkuPickupLocationsData {
-  skuPickupSLAs: SkuPickupLocation[]
+interface SkuPickupStoresData {
+  skuPickupSLAs: SkuPickupStore[]
 }
 
 interface Variables {
@@ -29,7 +29,7 @@ const Wrapper: FC = ({ children }) => (
 )
 
 interface Props {
-  coords: { lat: string | null, long: string | null }
+  coords: Coords
   selectedAddressId?: string
   onPickupChange: () => void
   dispatch: DispatchFn
@@ -46,7 +46,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
   }
 
   return (
-    <Query<SkuPickupLocationsData, Variables>
+    <Query<SkuPickupStoresData, Variables>
       query={skuPickupSLAs}
       variables={{
         itemId: selectedItem.itemId,
@@ -84,7 +84,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
               (
                 <Fragment>
                   <StoreList
-                    locations={data.skuPickupSLAs}
+                    stores={data.skuPickupSLAs}
                     maxItems={3}
                     selectedAddressId={selectedAddressId}
                     onPickupChange={onPickupChange}

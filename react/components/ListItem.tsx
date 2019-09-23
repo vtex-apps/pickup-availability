@@ -4,11 +4,11 @@ import StorePickupItem from './StorePickupItem'
 
 interface Props {
   isSelected: boolean
-  location: SkuPickupLocation
+  store: SkuPickupStore
   onSelectItem: () => void
 }
 
-const ListItem: FC<Props> = ({ location, isSelected, onSelectItem }) => {
+const ListItem: FC<Props> = ({ store, isSelected, onSelectItem }) => {
   const bgColor = isSelected ? 'bg-near-white' : 'bg-base'
   return (
     <div className={`flex ${bgColor} pa4 bt bb b--muted-4 ph7-l`}>
@@ -22,7 +22,7 @@ const ListItem: FC<Props> = ({ location, isSelected, onSelectItem }) => {
           onChange={onSelectItem}
         />
       </div>
-      <StorePickupItem location={location} />
+      <StorePickupItem store={store} />
     </div>
   )
 }

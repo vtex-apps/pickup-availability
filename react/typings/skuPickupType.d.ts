@@ -11,7 +11,7 @@ interface CheckoutAddress {
   city: string
 }
 
-interface SkuPickupLocation {
+interface SkuPickupStore {
   cacheId: string
   id: string
   shippingEstimate: string | null

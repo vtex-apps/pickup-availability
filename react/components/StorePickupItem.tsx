@@ -3,11 +3,11 @@ import TranslateEstimate from 'vtex.shipping-estimate-translator/TranslateEstima
 import { FormattedMessage } from 'react-intl'
 
 interface Props {
-  location: SkuPickupLocation
+  store: SkuPickupStore
 }
 
-const StorePickupItem: FC<Props> = ({ location }) => {
-  const { pickupStoreInfo: { address, friendlyName }, shippingEstimate } = location
+const StorePickupItem: FC<Props> = ({ store }) => {
+  const { pickupStoreInfo: { address, friendlyName }, shippingEstimate } = store
   const estimate = shippingEstimate && <TranslateEstimate shippingEstimate={shippingEstimate} isPickup />
   return (
     <div className="flex flex-column t-body lh-copy c-muted-2">

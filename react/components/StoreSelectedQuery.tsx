@@ -8,8 +8,8 @@ import StorePickupItem from './StorePickupItem'
 import { FormattedMessage } from 'react-intl'
 import ItemLoader from './Loaders/ItemLoader'
 
-interface SkupPickupSLAData {
-  skuPickupSLA: SkuPickupLocation
+interface SkuPickupSLAData {
+  skuPickupSLA: SkuPickupStore
 }
 
 interface Variables {
@@ -58,7 +58,7 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
   }
 
   return (
-    <Query<SkupPickupSLAData, Variables>
+    <Query<SkuPickupSLAData, Variables>
       query={skuPickupSLA}
       key={selectedItem.itemId}
       variables={{
@@ -75,14 +75,14 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
         if (error || !data) {
           return null
         }
-        const location = data.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
+        const store = data.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
         return (
           <div className="flex flex-column">
             <div className="mh2">
               <div className="t-body c-muted-2 mv3">
                 <FormattedMessage id="store/pickup-availability.availability-header" />
               </div>
-              {!loading ? <StorePickupItem location={location} /> : <ItemLoader />}
+              {!loading ? <StorePickupItem store={store} /> : <ItemLoader />}
             </div>
             <div>
               <Button variation="tertiary" onClick={onChangeStoreClick} size="small">

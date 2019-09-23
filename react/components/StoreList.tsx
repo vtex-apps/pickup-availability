@@ -24,7 +24,7 @@ interface Variables {
 type SavePickupMutation = MutationFunc<{ favoritePickup: SessionFavoritePickup }, Variables>
 
 interface Props {
-  locations: SkuPickupLocation[]
+  stores: SkuPickupStore[]
   maxItems?: number
   selectedAddressId: string | undefined
   savePickupInSession: SavePickupMutation
@@ -33,11 +33,11 @@ interface Props {
   onPressPickup?: () => void
 }
 
-const StoreList: FC<Props> = ({ locations, maxItems, selectedAddressId, savePickupInSession, onPickupChange, dispatch, onPressPickup }) => {
-  const items = maxItems && locations.length > maxItems ? locations.slice(0, maxItems) : locations
+const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupInSession, onPickupChange, dispatch, onPressPickup }) => {
+  const items = maxItems && stores.length > maxItems ? stores.slice(0, maxItems) : stores
 
-  const saveMutation = async (location: SkuPickupLocation) => {
-    const { address, friendlyName } = location.pickupStoreInfo
+  const saveMutation = async (store: SkuPickupStore) => {
+    const { address, friendlyName } = store.pickupStoreInfo
     await savePickupInSession({
       variables: {
         name: friendlyName,
@@ -59,16 +59,16 @@ const StoreList: FC<Props> = ({ locations, maxItems, selectedAddressId, savePick
 
   return (
     <Fragment>
-      {items.map((location) => {
+      {items.map(store => {
         return (
           <ListItem
-            key={location.id}
-            isSelected={location.pickupStoreInfo.address.addressId === selectedAddressId}
-            location={location}
+            key={store.id}
+            isSelected={store.pickupStoreInfo.address.addressId === selectedAddressId}
+            store={store}
             onSelectItem={() => {
               onPressPickup && onPressPickup()
               dispatch({ type: 'PICKUP_CHANGE_REQUEST' })
-              saveMutation(location).finally(() => {
+              saveMutation(store).finally(() => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
                 onPickupChange()
               })

@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl'
 const noop = (e: any) => { e.stopPropagation() }
 
 interface Props {
-  stores: SkuPickupLocation[]
+  stores: SkuPickupStore[]
   selectedAddressId: string | undefined
   onPickupChange: () => void
   dispatch: DispatchFn
@@ -60,7 +60,7 @@ const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChang
                 </div>
               </div>
               <StoreList
-                locations={stores}
+                stores={stores}
                 selectedAddressId={selectedAddressId}
                 onPressPickup={closeModal}
                 onPickupChange={onPickupChange}
