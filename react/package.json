@@ -6,26 +6,32 @@
   "dependencies": {
     "@vtex/css-handles": "^1.0.0",
     "classnames": "^2.2.6",
+    "graphql": "^14.0.2",
     "ramda": "^0.26.1",
     "react": "^16.8.3",
+    "react-apollo": "^2.3.2",
     "react-dom": "^16.8.3",
-    "react-intl": "^2.7.2"
+    "react-google-maps": "^9.4.5",
+    "react-intl": "^2.7.2",
+    "react-placeholder": "^3.0.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
-    "@types/graphql": "^14.2.0",
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.13.0",
+    "@types/googlemaps": "^3.37.4",
+    "@types/graphql": "^14.5.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.5",
     "@types/prop-types": "^15.7.0",
     "@types/ramda": "^0.26.5",
     "@types/react": "^16.8.10",
-    "@types/react-intl": "^2.3.17",
     "@vtex/test-tools": "^1.1.0",
+    "@vtex/tsconfig": "^0.2.0",
     "apollo-client": "^2.5.1",
-    "eslint": "^5.16.0",
-    "eslint-config-vtex-react": "^4.1.0",
+    "eslint": "5.16.0",
+    "eslint-config-vtex": "^10.0.0",
+    "eslint-config-vtex-react": "^4.0.1",
     "prettier": "^1.18.2",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "~3.3.4000"
+    "typescript": "3.5.2"
   }
 }

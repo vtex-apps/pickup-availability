@@ -1,8 +1,16 @@
 {
-  "editor.base-store-component.title": "Title of IO Base App component",
-  "editor.base-store-component.description": "Description of IO Base App component",
-  "editor.base-store-component.title.title": "Title of title property",
-  "editor.base-store-component.title.description": "Description of title property",
-  "base.title": "Base title message to be shown when title is not provided via CMS",
-  "base.change-value": "Text to be shown beside input component typed value"
+  "store/pickup-availability.available-header": "Displayed above pickup list",
+  "store/pickup-availability.input-form-header": "Displayed above address input form",
+  "store/pickup-availability.error-position-message": "Error message displayed when failed to get user position",
+  "store/pickup-availability.availability-header": "Used as header",
+  "store/pickup-availability.select-sku": "Warn user to select a valid SKU to see component correctly",
+  "store/pickup-availability.select-store": "Header for modal with store list",
+  "store/pickup-availability.input-placeholder": "Placeholder used in address input",
+  "store/pickup-availability.empty-list": "Message to be showed when no pickup was found after address search",
+  "store/pickup-availability.pickup-estimate": "Used to display the estimate time for user to item be available to pickup",
+  "store/pickup-availability.pickup-unavailable": "Used to display that pickup is not available for this item in the selected store",
+  "store/pickup-availability.choose-different": "Used in button to select a different store and show address form",
+  "store/pickup-availability.available-for-pickup": "Showed to displayed that product is available for pickup in the start of the flow",
+  "store/pickup-availability.choose-store": "Used in button to select a store and show address form in the start of the flow",
+  "store/pickup-availability.see-all": "Used in button to display modal with all stores"
 }

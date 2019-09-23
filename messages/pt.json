@@ -1,8 +1,16 @@
 {
-  "editor.base-store-component.title": "IO Base App",
-  "editor.base-store-component.description": "Um componente de demonstração para apps do VTEX IO",
-  "editor.base-store-component.title.title": "Título",
-  "editor.base-store-component.title.description": "Especifique um título personalizado",
-  "base.title": "Olá, Mundo!!",
-  "base.change-value": "Troque seu valor: {value}"
+  "store/pickup-availability.available-header": "Disponível em:",
+  "store/pickup-availability.input-form-header": "Escolha um endereço para encontrar uma loja:",
+  "store/pickup-availability.error-position-message": "Se produjo un error al intentar obtener la posición del dispositivo",
+  "store/pickup-availability.availability-header": "Disponibilidade",
+  "store/pickup-availability.select-sku": "Selecione algum SKU acima para checar sua disponibilidade",
+  "store/pickup-availability.select-store": "Escolha uma loja para retirar seu produto",
+  "store/pickup-availability.input-placeholder": "Busque um endereço",
+  "store/pickup-availability.empty-list": "Não foi possível achar um locais de retirada próximos ao endereço buscado",
+  "store/pickup-availability.pickup-estimate": "Disponível: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "Indisponível para retirada",
+  "store/pickup-availability.choose-different": "Escolher outra loja",
+  "store/pickup-availability.available-for-pickup": "Esse SKU está disponível para retirada",
+  "store/pickup-availability.choose-store": "Escolher uma loja",
+  "store/pickup-availability.see-all": "Ver todas as lojas"
 }

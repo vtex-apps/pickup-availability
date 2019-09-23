@@ -1,0 +1,22 @@
+mutation SavePickupInSession($name: String, $address: OrderFormAddressInput) {
+  savePickupInSession(address: $address, name: $name) {
+    cacheId
+    favoritePickup {
+      cacheId
+      name
+      address {
+        street
+        number
+        cacheId
+        addressId
+        complement
+        neighborhood
+        country
+        state
+        geoCoordinates
+        postalCode
+        city
+      }
+    }
+  }
+}

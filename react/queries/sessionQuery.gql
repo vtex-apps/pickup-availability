@@ -1,0 +1,20 @@
+query session {
+  getSession {
+    cacheId
+    favoritePickup {
+      cacheId
+      name
+      address {
+        addressId
+        complement
+        country
+        geoCoordinates
+        neighborhood
+        number
+        postalCode
+        state
+        street
+      }
+    }
+  }
+}
