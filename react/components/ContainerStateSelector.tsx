@@ -31,7 +31,6 @@ const ContainerStateSelector: FC<Props> = ({ favoritePickup, showSelectSkuMessag
   }
 
   if (showAddressForm && googleMapsKey) {
-    console.log('teste oi3')
     return (
       <AddressWithList
         googleMapsKey={googleMapsKey}

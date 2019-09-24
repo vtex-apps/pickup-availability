@@ -165,15 +165,13 @@ test('should render store list properly, do not show see all modal', async () =>
     }
   }
 
-  const { getByText, debug } = renderComponent({
+  const { getByText } = renderComponent({
     mocks: [sessionMock, logisticsMock, skuPickupsMock]
   })
 
   await flushPromises()
 
   jest.runAllTimers()
-
-  debug()
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -330,15 +328,13 @@ test('should render store list properly, show top three only and see all button'
     }
   }
 
-  const { getByText, debug, container } = renderComponent({
+  const { getByText, container } = renderComponent({
     mocks: [sessionMock, logisticsMock, skuPickupsMock]
   })
 
   await flushPromises()
 
   jest.runAllTimers()
-
-  debug()
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -529,15 +525,13 @@ test('test that changing coords pased to component reults in a different query a
 
 
 
-  const { getByText, debug, container, rerender } = renderComponent({
+  const { getByText, container, rerender } = renderComponent({
     mocks: [sessionMock, logisticsMock, skuPickupsMock, skuPickupsMockClone]
   })
 
   await flushPromises()
 
   jest.runAllTimers()
-
-  // debug()
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -560,10 +554,101 @@ test('test that changing coords pased to component reults in a different query a
 
   await flushPromises()
   jest.runAllTimers()
-  debug()
 
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
   expect(queryByText(container, /See all stores/)).toBeNull()
+})
+
+test('Shoudl render empty list message', async () => {
+  jest.useFakeTimers()
+
+  const sessionMock = {
+    request: {
+      query: sessionQuery,
+    },
+    result: {
+      loading: false,
+      data: {
+        getSession: {
+          cacheId: 'a',
+          favoritePickup: {
+            cacheId: 'ppbotafogo',
+            name: 'Pickup Botafogo',
+            address: {
+              street: 'Praia de Botafogo',
+              number: '300',
+              addressId: 'ppbotafogo',
+              state: 'RJ',
+              country: 'BRA',
+              geoCoordinates: [-43, -20],
+              postalCode: '2250040',
+              complement: '',
+              neighborhood: 'Botafogo'
+            }
+          }
+        },
+      }
+    }
+  }
+
+  const logisticsMock = {
+    request: {
+      query: logisticsQuery,
+    },
+    result: {
+      loading: false,
+      data: {
+        logistics: {
+          googleMapsKey: 'aaaaa',
+        }
+      }
+    }
+  }
+
+  const skuPickupsMock = {
+    request: {
+      query: skuPickupSLAs,
+      variables: {
+        itemId: '1',
+        seller: '1',
+        lat: '-23',
+        long: '-43',
+        country: 'BRA',
+      }
+    },
+    result: {
+      loading: false,
+      data: {
+        skuPickupSLAs: [],
+      }
+    }
+  }
+
+  const { getByText, container } = renderComponent({
+    mocks: [sessionMock, logisticsMock, skuPickupsMock]
+  })
+
+  await flushPromises()
+
+  jest.runAllTimers()
+
+  expect(getByText(/Could not find pickup locations near specified address/)).toBeDefined()
+  expect(queryByText(container, /See all stores/)).toBeNull()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.friendlyName))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.address.street))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.address.number))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.friendlyName))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.street))).toBeDefined()
+  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.number))).toBeDefined()
+
+  // // Fourth element should not be found
+  // expect(queryByText(container, new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
+
+  // //See all stores button should appear
+  // expect(getByText(/See all stores/)).toBeDefined()
 })

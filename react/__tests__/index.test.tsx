@@ -42,7 +42,6 @@ const renderComponent = (customProps: any = {}) => {
   const skuSelector = customProps.skuSelector || { isVisible: false }
 
   const moreMock = customProps.otherMocks || []
-  // console.log([logisticsMock, sessionMock, ...moreMock])
 
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <Index />

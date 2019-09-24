@@ -104,15 +104,13 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
     }
   }
 
-  const { getByText, debug } = renderComponent({
+  const { getByText } = renderComponent({
     mocks: [sessionMock, logisticsMock, skuPickupMock]
   })
 
   await flushPromises()
 
   jest.runAllTimers()
-
-  debug()
 
   expect(getByText(new RegExp(sessionMock.result.data.getSession.favoritePickup.name))).toBeDefined()
   expect(getByText(new RegExp(sessionMock.result.data.getSession.favoritePickup.address.street))).toBeDefined()

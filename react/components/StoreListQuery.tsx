@@ -45,14 +45,6 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
     return null
   }
 
-  console.log('vars: ', {
-    itemId: selectedItem.itemId,
-    seller: selectedItem.sellers[0].sellerId,
-    lat: coords.lat,
-    long: coords.long,
-    country,
-  })
-
   return (
     <Query<SkuPickupStoresData, Variables>
       query={skuPickupSLAs}
