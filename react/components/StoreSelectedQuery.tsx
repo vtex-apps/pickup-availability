@@ -2,11 +2,13 @@ import React, { FC } from 'react'
 import { Query } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { Button } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
+
 import StorePickupItem from './StorePickupItem'
-import { FormattedMessage } from 'react-intl'
 import ItemLoader from './Loaders/ItemLoader'
+import styles from './styles.css'
 
 interface SkuPickupSLAData {
   skuPickupSLA: SkuPickupStore
@@ -78,14 +80,14 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
 
         const store = data.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
         return (
-          <div className="flex flex-column">
+          <div className={`flex flex-column ${styles.storeSelectedContainer}`}>
             <div className="mh2">
-              <div className="t-body c-muted-2 mv3">
+              <div className={`t-body c-muted-2 mv3 ${styles.availabilityHeader}`}>
                 <FormattedMessage id="store/pickup-availability.availability-header" />
               </div>
               {!loading ? <StorePickupItem store={store} /> : <ItemLoader />}
             </div>
-            <div>
+            <div className={styles.chooseDifferentStoreButton}>
               <Button variation="tertiary" onClick={onChangeStoreClick} size="small">
                 <div className="t-body nh4">
                   <FormattedMessage id="store/pickup-availability.choose-different" />

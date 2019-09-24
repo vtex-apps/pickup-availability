@@ -10,6 +10,8 @@ import SeeAllStoresModal from './SeeAllStoresModal'
 import StoreList from './StoreList'
 import ItemLoader from './Loaders/ItemLoader'
 
+import styles from './styles.css'
+
 interface SkuPickupStoresData {
   skuPickupSLAs: SkuPickupStore[]
 }
@@ -23,7 +25,7 @@ interface Variables {
 }
 
 const Wrapper: FC = ({ children }) => (
-  <div className="flex flex-column flex-grow-1 mv5">
+  <div className={`flex flex-column flex-grow-1 mv5 ${styles.storeListContainer}`}>
     {children}
   </div>
 )
@@ -63,7 +65,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
         if (!loading && (error || !hasItems)) {
           return (
             <Wrapper>
-              <div className="t-body c-muted-2">
+              <div className={`t-body c-muted-2 ${styles.storeListEmptyMessage}`}>
                 <FormattedMessage id="store/pickup-availability.empty-list" />
               </div>
             </Wrapper>
@@ -83,13 +85,15 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
             ) :
               (
                 <Fragment>
-                  <StoreList
-                    stores={data.skuPickupSLAs}
-                    maxItems={3}
-                    selectedAddressId={selectedAddressId}
-                    onPickupChange={onPickupChange}
-                    dispatch={dispatch}
-                  />
+                  <div className={styles.storeList}>
+                    <StoreList
+                      stores={data.skuPickupSLAs}
+                      maxItems={3}
+                      selectedAddressId={selectedAddressId}
+                      onPickupChange={onPickupChange}
+                      dispatch={dispatch}
+                    />
+                  </div>
                   <SeeAllStoresModal
                     stores={data.skuPickupSLAs}
                     selectedAddressId={selectedAddressId}

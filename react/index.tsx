@@ -3,6 +3,7 @@ import { graphql, DataValue } from 'react-apollo'
 import { compose, path } from 'ramda'
 import useProduct from 'vtex.product-context/useProduct'
 
+import styles from './components/styles.css'
 import logisticsQuery from './queries/logistics.gql'
 import sessionQuery from './queries/sessionQuery.gql'
 import ContainerStateSelector from './components/ContainerStateSelector'
@@ -26,12 +27,14 @@ const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery, sessionQuery }) =
   }
 
   return (
-    <ContainerStateSelector
-      favoritePickup={sessionQuery.getSession && sessionQuery.getSession.favoritePickup}
-      showSelectSkuMessage={skuSelector.isVisible && !skuSelector.areAllVariationsSelected}
-      googleMapsKey={logisticsQuery.logistics && logisticsQuery.logistics.googleMapsKey}
-      selectedAddressId={path<string>(['getSession', 'favoritePickup', 'address', 'addressId'], sessionQuery)}
-    />
+    <div className={styles.container}>
+      <ContainerStateSelector
+        favoritePickup={sessionQuery.getSession && sessionQuery.getSession.favoritePickup}
+        showSelectSkuMessage={skuSelector.isVisible && !skuSelector.areAllVariationsSelected}
+        googleMapsKey={logisticsQuery.logistics && logisticsQuery.logistics.googleMapsKey}
+        selectedAddressId={path<string>(['getSession', 'favoritePickup', 'address', 'addressId'], sessionQuery)}
+      />
+    </div>
   )
 }
 

@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { Radio } from 'vtex.styleguide'
 import StorePickupItem from './StorePickupItem'
 
+import styles from './styles.css'
+
 interface Props {
   isSelected: boolean
   store: SkuPickupStore
@@ -11,7 +13,7 @@ interface Props {
 const ListItem: FC<Props> = ({ store, isSelected, onSelectItem }) => {
   const bgColor = isSelected ? 'bg-near-white' : 'bg-base'
   return (
-    <div className={`flex ${bgColor} pa4 bt bb b--muted-4 ph7-l`}>
+    <div className={`flex ${bgColor} pa4 bt bb b--muted-4 ph7-l ${styles.storeListItem}`}>
       <div className="mt3">
         <Radio
           checked={isSelected}
