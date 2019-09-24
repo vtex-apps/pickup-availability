@@ -21,6 +21,9 @@ interface InjectedProps {
 const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery, sessionQuery }) => {
   const { skuSelector } = useProduct()
 
+  // console.log('teste oLAAA', logisticsQuery)
+  // console.log('teste oLAAA', sessionQuery)
+
   if (logisticsQuery.loading || sessionQuery.loading) {
     return null
   }

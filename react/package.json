@@ -1,6 +1,7 @@
 {
   "scripts": {
     "test": "vtex-test-tools test",
+    "pretest": "yarn",
     "lint": "tsc --noEmit && eslint --ext ts,tsx ."
   },
   "dependencies": {
@@ -24,14 +25,18 @@
     "@types/prop-types": "^15.7.0",
     "@types/ramda": "^0.26.5",
     "@types/react": "^16.8.10",
-    "@vtex/test-tools": "^1.1.0",
+    "@vtex/test-tools": "^1.2.0",
     "@vtex/tsconfig": "^0.2.0",
-    "apollo-client": "^2.5.1",
+    "apollo-cache-inmemory": "^1.6.3",
+    "apollo-client": "^2.6.4",
     "eslint": "5.16.0",
     "eslint-config-vtex": "^10.0.0",
     "eslint-config-vtex-react": "^4.0.1",
     "prettier": "^1.18.2",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "3.5.2"
+  },
+  "vtexTestTools": {
+    "defaultLocale": "pt-BR"
   }
 }
