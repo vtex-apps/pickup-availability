@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, flushPromises } from '@vtex/test-tools/react'
+import { render, flushPromises, act } from '@vtex/test-tools/react'
 import StoreSelectedQuery from '../components/StoreSelectedQuery'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -7,7 +7,6 @@ import { getProduct } from '../__mocks__/productMock'
 import ProductContextProvider from '../__mocks__/vtex.product-context/ProductContextProvider'
 
 import logisticsQuery from '../queries/logistics.gql'
-import sessionQuery from '../queries/sessionQuery.gql'
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
 
 const favoritePickup = {
@@ -26,10 +25,42 @@ const favoritePickup = {
   }
 }
 
+const fakeSession = {
+  id: 'a',
+  namespaces: {
+    public: {
+      favoritePickup: {
+        value: {
+          name: 'Pickup Botafogo',
+          address: {
+            street: 'Praia de Botafogo',
+            number: '300',
+            addressId: 'ppbotafogo',
+            state: 'RJ',
+            country: 'BRA',
+            geoCoordinate: [-43, -20],
+            postalCode: '2250040',
+            complement: '',
+            neighborhood: 'Botafogo'
+          }
+        }
+      }
+    }
+  }
+}
+
 const renderComponent = (customProps: any = {}) => {
 
   const product = customProps.product || getProduct()
   const skuSelector = customProps.skuSelector || { isVisible: false }
+
+  const sessionPromise = new Promise(resolve => {
+    resolve({ response: customProps.sessionMock || fakeSession })
+  })
+
+  global.__RENDER_8_SESSION__ = {
+    sessionPromise
+  }
 
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <StoreSelectedQuery pickup={favoritePickup as any} onChangeStoreClick={() => { }} />
@@ -40,35 +71,6 @@ const renderComponent = (customProps: any = {}) => {
 
 test('should render unavailable pickup properly if no sku pickup was found', async () => {
   jest.useFakeTimers()
-
-  const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
-            name: 'Pickup Botafogo',
-            address: {
-              street: 'Praia de Botafogo',
-              number: '300',
-              addressId: 'ppbotafogo',
-              state: 'RJ',
-              country: 'BRA',
-              geoCoordinates: [-43, -20],
-              postalCode: '2250040',
-              complement: '',
-              neighborhood: 'Botafogo'
-            }
-          }
-        },
-      }
-    }
-  }
 
   const logisticsMock = {
     request: {
@@ -105,16 +107,20 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
   }
 
   const { getByText } = renderComponent({
-    mocks: [sessionMock, logisticsMock, skuPickupMock]
+    mocks: [logisticsMock, skuPickupMock]
   })
 
   await flushPromises()
 
   jest.runAllTimers()
 
-  expect(getByText(new RegExp(sessionMock.result.data.getSession.favoritePickup.name))).toBeDefined()
-  expect(getByText(new RegExp(sessionMock.result.data.getSession.favoritePickup.address.street))).toBeDefined()
-  expect(getByText(new RegExp(sessionMock.result.data.getSession.favoritePickup.address.number))).toBeDefined()
+  await act(() => { })
+
+  jest.runAllTimers()
+
+  expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.name))).toBeDefined()
+  expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.street))).toBeDefined()
+  expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.number))).toBeDefined()
   expect(getByText(/Unavailable for pickup/)).toBeDefined()
   expect(getByText(/Choose a different store/)).toBeDefined()
 })

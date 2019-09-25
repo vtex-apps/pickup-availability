@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, flushPromises } from '@vtex/test-tools/react'
+import { render, flushPromises, act } from '@vtex/test-tools/react'
 import Index from '../index'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -7,22 +7,22 @@ import { getProduct } from '../__mocks__/productMock'
 import ProductContextProvider from '../__mocks__/vtex.product-context/ProductContextProvider'
 
 import logisticsQuery from '../queries/logistics.gql'
-import sessionQuery from '../queries/sessionQuery.gql'
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
 
+const fakeSession = {
+  id: 'a',
+  namespaces: {
+    public: {}
+  }
+}
+
 const renderComponent = (customProps: any = {}) => {
+  const sessionPromise = new Promise(resolve => {
+    resolve({ response: customProps.sessionMock || fakeSession })
+  })
 
-
-  const sessionMock = customProps.sessionMock || {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {},
-      }
-    }
+  global.__RENDER_8_SESSION__ = {
+    sessionPromise
   }
 
   const logisticsMock = {
@@ -46,14 +46,12 @@ const renderComponent = (customProps: any = {}) => {
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <Index />
   </ProductContextProvider>, {
-    graphql: { mocks: [logisticsMock, sessionMock, ...moreMock] }
+    graphql: { mocks: [logisticsMock, ...moreMock] }
   })
 }
 
 test('should render choose store view when no favorite pickup in session', async () => {
   jest.useFakeTimers()
-
-
 
   const { getByText } = renderComponent()
 
@@ -95,16 +93,11 @@ test('should render store selected component with shipping estimate properly', a
   jest.useFakeTimers()
 
   const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
+    id: 'a',
+    namespaces: {
+      public: {
+        favoritePickup: {
+          value: {
             name: 'Pickup Botafogo',
             address: {
               street: 'Praia de Botafogo',
@@ -112,13 +105,13 @@ test('should render store selected component with shipping estimate properly', a
               addressId: 'ppbotafogo',
               state: 'RJ',
               country: 'BRA',
-              geoCoordinates: [-43, -20],
+              geoCoordinate: [-43, -20],
               postalCode: '2250040',
               complement: '',
               neighborhood: 'Botafogo'
             }
           }
-        },
+        }
       }
     }
   }
@@ -164,12 +157,17 @@ test('should render store selected component with shipping estimate properly', a
 
   const otherMocks = [skuPickupMock]
 
+
   const { getByText } = renderComponent({
     sessionMock,
     otherMocks,
   })
 
   await flushPromises()
+
+  jest.runAllTimers()
+
+  await act(() => { })
 
   jest.runAllTimers()
 

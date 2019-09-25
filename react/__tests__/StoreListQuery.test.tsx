@@ -22,8 +22,6 @@ const renderComponent = (customProps: any = {}) => {
   const product = customProps.product || getProduct()
   const skuSelector = customProps.skuSelector || { isVisible: false }
 
-  // const customRerender = ()
-  // const a = <TestComponent product={product} skuSelector={skuSelector} coords={customProps.coords || { lat: '-23', long: '-43' }} selectedAddressId={customProps.selectedAddressId} onPickupChange={() => { }} dispatch={() => { }} />
   const result = render(<TestComponent product={product} skuSelector={skuSelector} coords={customProps.coords || { lat: '-23', long: '-43' }} selectedAddressId={customProps.selectedAddressId} onPickupChange={() => { }} dispatch={() => { }} />, {
     graphql: { mocks: customProps.mocks || [] }
   })
@@ -34,44 +32,10 @@ const renderComponent = (customProps: any = {}) => {
     ...result,
     rerender: customRerender,
   }
-  // return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
-  //   <StoreListQuery coords={customProps.coords || { lat: '-23', long: '-43' }} selectedAddressId={customProps.selectedAddressId} onPickupChange={() => { }} dispatch={() => { }} />
-  // </ProductContextProvider>, {
-  //   graphql: { mocks: customProps.mocks || [] }
-  // })
 }
 
 test('should render store list properly, do not show see all modal', async () => {
   jest.useFakeTimers()
-
-  const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
-            name: 'Pickup Botafogo',
-            address: {
-              street: 'Praia de Botafogo',
-              number: '300',
-              addressId: 'ppbotafogo',
-              state: 'RJ',
-              country: 'BRA',
-              geoCoordinates: [-43, -20],
-              postalCode: '2250040',
-              complement: '',
-              neighborhood: 'Botafogo'
-            }
-          }
-        },
-      }
-    }
-  }
 
   const logisticsMock = {
     request: {
@@ -166,7 +130,7 @@ test('should render store list properly, do not show see all modal', async () =>
   }
 
   const { getByText } = renderComponent({
-    mocks: [sessionMock, logisticsMock, skuPickupsMock]
+    mocks: [logisticsMock, skuPickupsMock]
   })
 
   await flushPromises()
@@ -186,35 +150,6 @@ test('should render store list properly, do not show see all modal', async () =>
 
 test('should render store list properly, show top three only and see all button', async () => {
   jest.useFakeTimers()
-
-  const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
-            name: 'Pickup Botafogo',
-            address: {
-              street: 'Praia de Botafogo',
-              number: '300',
-              addressId: 'ppbotafogo',
-              state: 'RJ',
-              country: 'BRA',
-              geoCoordinates: [-43, -20],
-              postalCode: '2250040',
-              complement: '',
-              neighborhood: 'Botafogo'
-            }
-          }
-        },
-      }
-    }
-  }
 
   const logisticsMock = {
     request: {
@@ -329,7 +264,7 @@ test('should render store list properly, show top three only and see all button'
   }
 
   const { getByText, container } = renderComponent({
-    mocks: [sessionMock, logisticsMock, skuPickupsMock]
+    mocks: [logisticsMock, skuPickupsMock]
   })
 
   await flushPromises()
@@ -355,35 +290,6 @@ test('should render store list properly, show top three only and see all button'
 
 test('test that changing coords pased to component reults in a different query and works flawless', async () => {
   jest.useFakeTimers()
-
-  const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
-            name: 'Pickup Botafogo',
-            address: {
-              street: 'Praia de Botafogo',
-              number: '300',
-              addressId: 'ppbotafogo',
-              state: 'RJ',
-              country: 'BRA',
-              geoCoordinates: [-43, -20],
-              postalCode: '2250040',
-              complement: '',
-              neighborhood: 'Botafogo'
-            }
-          }
-        },
-      }
-    }
-  }
 
   const logisticsMock = {
     request: {
@@ -526,7 +432,7 @@ test('test that changing coords pased to component reults in a different query a
 
 
   const { getByText, container, rerender } = renderComponent({
-    mocks: [sessionMock, logisticsMock, skuPickupsMock, skuPickupsMockClone]
+    mocks: [logisticsMock, skuPickupsMock, skuPickupsMockClone]
   })
 
   await flushPromises()
@@ -561,37 +467,8 @@ test('test that changing coords pased to component reults in a different query a
   expect(queryByText(container, /See all stores/)).toBeNull()
 })
 
-test('Shoudl render empty list message', async () => {
+test('Should render empty list message', async () => {
   jest.useFakeTimers()
-
-  const sessionMock = {
-    request: {
-      query: sessionQuery,
-    },
-    result: {
-      loading: false,
-      data: {
-        getSession: {
-          cacheId: 'a',
-          favoritePickup: {
-            cacheId: 'ppbotafogo',
-            name: 'Pickup Botafogo',
-            address: {
-              street: 'Praia de Botafogo',
-              number: '300',
-              addressId: 'ppbotafogo',
-              state: 'RJ',
-              country: 'BRA',
-              geoCoordinates: [-43, -20],
-              postalCode: '2250040',
-              complement: '',
-              neighborhood: 'Botafogo'
-            }
-          }
-        },
-      }
-    }
-  }
 
   const logisticsMock = {
     request: {
@@ -627,7 +504,7 @@ test('Shoudl render empty list message', async () => {
   }
 
   const { getByText, container } = renderComponent({
-    mocks: [sessionMock, logisticsMock, skuPickupsMock]
+    mocks: [logisticsMock, skuPickupsMock]
   })
 
   await flushPromises()
@@ -636,19 +513,4 @@ test('Shoudl render empty list message', async () => {
 
   expect(getByText(/Could not find pickup locations near specified address/)).toBeDefined()
   expect(queryByText(container, /See all stores/)).toBeNull()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.friendlyName))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.address.street))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[1].pickupStoreInfo.address.number))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.friendlyName))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.street))).toBeDefined()
-  // expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.number))).toBeDefined()
-
-  // // Fourth element should not be found
-  // expect(queryByText(container, new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
-
-  // //See all stores button should appear
-  // expect(getByText(/See all stores/)).toBeDefined()
 })
