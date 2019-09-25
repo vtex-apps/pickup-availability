@@ -18,17 +18,19 @@ function usePickupFromSession() {
   useEffect(() => {
     let isCurrent = true
     const sessionPromise = (window as any).__RENDER_8_SESSION__.sessionPromise
-    sessionPromise.then((data: SessionData) => {
-      const favoritePickupData = path<SessionPickup>(['response', 'namespaces', 'public', 'favoritePickup', 'value'], data)
-      if (!favoritePickupData) {
-        return
-      }
-      const { name, address } = favoritePickupData
-      const { geoCoordinate, ...rest } = address
-      if (isCurrent) {
-        setFavoritePickup({ name, address: { ...rest, geoCoordinates: geoCoordinate } })
-      }
-    })
+    if (sessionPromise) {
+      sessionPromise.then((data: SessionData) => {
+        const favoritePickupData = path<SessionPickup>(['response', 'namespaces', 'public', 'favoritePickup', 'value'], data)
+        if (!favoritePickupData) {
+          return
+        }
+        const { name, address } = favoritePickupData
+        const { geoCoordinate, ...rest } = address
+        if (isCurrent) {
+          setFavoritePickup({ name, address: { ...rest, geoCoordinates: geoCoordinate } })
+        }
+      })
+    }
     return () => {
       isCurrent = false
     }
