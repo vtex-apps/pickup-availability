@@ -8,7 +8,7 @@ import AddressBarLoader from './Loaders/AddressBarLoader'
 interface Props {
   selectedAddressId: string | undefined
   googleMapsKey: string
-  onPickupChange: () => void
+  onPickupChange: (pickup?: FavoritePickup) => void
 }
 
 const LoadingOverlay: FC<{ loading: boolean }> = ({ children, loading }) => {

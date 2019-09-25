@@ -1,4 +1,5 @@
 import React, { Fragment, FC } from 'react'
+import { path } from 'ramda'
 import { graphql, MutationFunc } from 'react-apollo'
 
 import savePickupInSession from '../mutations/savePickupInSession.gql'
@@ -28,7 +29,7 @@ interface Props {
   maxItems?: number
   selectedAddressId: string | undefined
   savePickupInSession: SavePickupMutation
-  onPickupChange: () => void
+  onPickupChange: (pickup?: FavoritePickup) => void
   dispatch: DispatchFn
   onPressPickup?: () => void
 }
@@ -36,9 +37,9 @@ interface Props {
 const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupInSession, onPickupChange, dispatch, onPressPickup }) => {
   const items = maxItems && stores.length > maxItems ? stores.slice(0, maxItems) : stores
 
-  const saveMutation = async (store: SkuPickupStore) => {
+  const saveMutation = (store: SkuPickupStore) => {
     const { address, friendlyName } = store.pickupStoreInfo
-    await savePickupInSession({
+    return savePickupInSession({
       variables: {
         name: friendlyName,
         address: {
@@ -68,9 +69,11 @@ const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupI
             onSelectItem={() => {
               onPressPickup && onPressPickup()
               dispatch({ type: 'PICKUP_CHANGE_REQUEST' })
-              saveMutation(store).finally(() => {
+              saveMutation(store).then(response => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
-                onPickupChange()
+                onPickupChange(path<FavoritePickup>(['data', 'savePickupInSession', 'favoritePickup'], response))
+              }).catch(() => {
+                dispatch({ type: 'PICKUP_CHANGE_DONE' })
               })
             }}
           />

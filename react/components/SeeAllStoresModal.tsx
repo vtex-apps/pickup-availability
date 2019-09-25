@@ -14,7 +14,7 @@ const noop = (e: any) => { e.stopPropagation() }
 interface Props {
   stores: SkuPickupStore[]
   selectedAddressId: string | undefined
-  onPickupChange: () => void
+  onPickupChange: (pickup?: FavoritePickup) => void
   dispatch: DispatchFn
 }
 

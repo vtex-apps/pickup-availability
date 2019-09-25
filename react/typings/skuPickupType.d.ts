@@ -25,10 +25,6 @@ interface SkuPickupStore {
   }
 }
 
-// interface FavoritePickup {
-
-// }
-
 interface FavoritePickup {
   name: string
   address: CheckoutAddress

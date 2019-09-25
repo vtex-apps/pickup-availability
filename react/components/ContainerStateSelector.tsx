@@ -1,21 +1,46 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
+import { path } from 'ramda'
 
 import SelectSkuMessage from './SelectSkuMessage'
 import StoreSelectedQuery from './StoreSelectedQuery'
 import AddressWithList from './AddressWithList'
 
 interface Props {
-  favoritePickup?: FavoritePickup
   googleMapsKey?: string
   showSelectSkuMessage: boolean
-  selectedAddressId?: string
+}
+
+function usePickupFromSession() {
+  const [favoritePickup, setFavoritePickup] = useState<FavoritePickup | undefined>(undefined)
+
+  useEffect(() => {
+    let isCurrent = true
+    const sessionPromise = (window as any).__RENDER_8_SESSION__.sessionPromise
+    sessionPromise.then((data: SessionData) => {
+      const favoritePickupData = path<SessionPickup>(['response', 'namespaces', 'public', 'favoritePickup', 'value'], data)
+      if (!favoritePickupData) {
+        return
+      }
+      const { name, address } = favoritePickupData
+      const { geoCoordinate, ...rest } = address
+      if (isCurrent) {
+        setFavoritePickup({ name, address: { ...rest, geoCoordinates: geoCoordinate } })
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [])
+
+  return { favoritePickup, setFavoritePickup }
 }
 
 
-const ContainerStateSelector: FC<Props> = ({ favoritePickup, showSelectSkuMessage, googleMapsKey, selectedAddressId }) => {
+const ContainerStateSelector: FC<Props> = ({ showSelectSkuMessage, googleMapsKey }) => {
   const [showAddressForm, setShowForm] = useState(false)
+  const { favoritePickup, setFavoritePickup } = usePickupFromSession()
 
   if (showSelectSkuMessage) {
     return <SelectSkuMessage />
@@ -34,8 +59,11 @@ const ContainerStateSelector: FC<Props> = ({ favoritePickup, showSelectSkuMessag
     return (
       <AddressWithList
         googleMapsKey={googleMapsKey}
-        selectedAddressId={selectedAddressId}
-        onPickupChange={() => setShowForm(false)}
+        selectedAddressId={path<string>(['address', 'addressId'], favoritePickup)}
+        onPickupChange={(pickup?: FavoritePickup) => {
+          setShowForm(false)
+          setFavoritePickup(pickup)
+        }}
       />
     )
   }

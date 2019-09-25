@@ -33,7 +33,7 @@ const Wrapper: FC = ({ children }) => (
 interface Props {
   coords: Coords
   selectedAddressId?: string
-  onPickupChange: () => void
+  onPickupChange: (pickup?: FavoritePickup) => void
   dispatch: DispatchFn
 }
 
