@@ -20,18 +20,14 @@ function usePickupFromSession() {
     const sessionPromise = (window as any).__RENDER_8_SESSION__.sessionPromise
     if (sessionPromise) {
       sessionPromise.then((data: SessionData) => {
-
-        console.log('teste data: ', JSON.stringify(data))
-
         const favoritePickupData = path<SessionPickup>(['response', 'namespaces', 'public', 'favoritePickup', 'value'], data)
-        console.log('teste OI: ', favoritePickupData)
         if (!favoritePickupData) {
           return
         }
-        console.log('teste OI: ', favoritePickupData)
+
         const { name, address } = favoritePickupData
         const { geoCoordinate, ...rest } = address
-        console.log('teste SETTING: ', { name, address: { ...rest, geoCoordinates: geoCoordinate } })
+
         if (isCurrent) {
           setFavoritePickup({ name, address: { ...rest, geoCoordinates: geoCoordinate } })
         }
