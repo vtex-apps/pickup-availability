@@ -7,7 +7,7 @@ import StoreSelectedQuery from './StoreSelectedQuery'
 import AddressWithList from './AddressWithList'
 
 interface Props {
-  favoritePickup?: SessionFavoritePickup
+  favoritePickup?: FavoritePickup
   googleMapsKey?: string
   showSelectSkuMessage: boolean
   selectedAddressId?: string

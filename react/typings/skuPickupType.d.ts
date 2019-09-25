@@ -11,6 +11,10 @@ interface CheckoutAddress {
   city: string
 }
 
+type SessionAddress = Omit<CheckoutAddress, 'geoCoordinates'> & {
+  geoCoordinate: [number, number]
+}
+
 interface SkuPickupStore {
   cacheId: string
   id: string
@@ -21,7 +25,11 @@ interface SkuPickupStore {
   }
 }
 
-interface SessionFavoritePickup {
+// interface FavoritePickup {
+
+// }
+
+interface FavoritePickup {
   name: string
   address: CheckoutAddress
 }

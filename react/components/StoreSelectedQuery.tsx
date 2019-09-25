@@ -24,11 +24,11 @@ interface Variables {
 }
 
 interface Props {
-  pickup: SessionFavoritePickup
+  pickup: FavoritePickup
   onChangeStoreClick: () => void
 }
 
-const getVariablesFromSessionPickup = (pickup: SessionFavoritePickup) => {
+const getVariablesFromSessionPickup = (pickup: FavoritePickup) => {
   const { geoCoordinates, country, addressId } = pickup.address
   const [long, lat] = geoCoordinates
   return {
@@ -39,7 +39,7 @@ const getVariablesFromSessionPickup = (pickup: SessionFavoritePickup) => {
   }
 }
 
-const createSlaFromSessionPickup = (pickup: SessionFavoritePickup) => {
+const createSlaFromSessionPickup = (pickup: FavoritePickup) => {
   return {
     cacheId: pickup.address.addressId,
     id: pickup.address.addressId,

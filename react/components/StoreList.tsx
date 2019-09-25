@@ -21,7 +21,7 @@ interface Variables {
     geoCoordinates: [number, number]
   }
 }
-type SavePickupMutation = MutationFunc<{ favoritePickup: SessionFavoritePickup }, Variables>
+type SavePickupMutation = MutationFunc<{ favoritePickup: FavoritePickup }, Variables>
 
 interface Props {
   stores: SkuPickupStore[]
