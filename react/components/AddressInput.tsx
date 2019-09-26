@@ -22,40 +22,81 @@ const getCurrentPositionPromise = (): Promise<Position> => {
   })
 }
 
+interface GoogleRequestParams {
+  lat: string
+  long: string
+  googleMapsKey: string
+}
+
+const requestGoogleMapsApi = async (params: GoogleRequestParams): Promise<GoogleResponse> => {
+  const { lat, long, googleMapsKey } = params
+  try {
+    const response =
+      await fetch(`https://maps.googleapis.com/maps/api/geocode/json?key=${googleMapsKey}&latlng=${lat},${long}`)
+    return await response.json()
+  } catch (err) {
+    return { results: [] }
+  }
+}
+
+interface GoogleResponse {
+  results: Array<{
+    formatted_address: string
+  }>
+}
+
 interface Props {
   onPlaceSelected: (place: google.maps.places.PlaceResult) => void
   onCurrentPositionReceived: (coords: Coords) => void
+  googleMapsKey: string
 }
 
 interface State {
   isFetchingPosition: boolean
   showError: boolean
+  formattedAddress: string | undefined
 }
 
-class AddressForm extends PureComponent<Props & WithScriptjsProps & RenderContextProps & InjectedIntlProps, State> {
+class AddressInput extends PureComponent<Props & WithScriptjsProps & RenderContextProps & InjectedIntlProps, State> {
   state = {
     isFetchingPosition: false,
     showError: false,
+    formattedAddress: undefined
   }
 
-  onSuffixPress = () => {
-    const { onCurrentPositionReceived } = this.props
+  onSuffixPress = async () => {
+    const { onCurrentPositionReceived, googleMapsKey } = this.props
     this.setState({ isFetchingPosition: true, showError: false })
-    getCurrentPositionPromise()
-      .then(position => {
-        this.setState({ isFetchingPosition: false })
-        onCurrentPositionReceived({
-          lat: position.coords.latitude.toString(),
-          long: position.coords.longitude.toString(),
-        })
-      })
-      .catch(() => this.setState({ isFetchingPosition: false, showError: true }))
+    const position = await getCurrentPositionPromise().catch(() => null)
+    if (!position) {
+      this.setState({ isFetchingPosition: false, showError: true })
+      return
+    }
+    const lat = position.coords.latitude.toString()
+    const long = position.coords.longitude.toString()
+    onCurrentPositionReceived({
+      lat,
+      long,
+    })
+
+    const googleResponse = await requestGoogleMapsApi({
+      googleMapsKey,
+      lat,
+      long,
+    })
+    if (googleResponse.results.length > 0) {
+      const [closestMatch] = googleResponse.results
+      this.setState({ formattedAddress: closestMatch['formatted_address'] })
+    }
+
+    this.setState({ isFetchingPosition: false })
   }
 
-  onChange = () => {
+  onChange = (e: any) => {
     if (this.state.showError) {
       this.setState({ showError: false })
     }
+    this.setState({ formattedAddress: e.target.value })
   }
 
   render() {
@@ -81,10 +122,11 @@ class AddressForm extends PureComponent<Props & WithScriptjsProps & RenderContex
           componentRestrictions={{ country }}
           onChange={this.onChange}
           errorMessage={this.state.showError ? formatMessage({ id: 'store/pickup-availability.error-position-message' }) : undefined}
+          value={this.state.formattedAddress}
         />
       </Fragment>
     )
   }
 }
 
-export default injectIntl(withRuntimeContext(withScriptjs(AddressForm)))
+export default injectIntl(withRuntimeContext(withScriptjs(AddressInput)))

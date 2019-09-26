@@ -9,19 +9,18 @@ import { FormattedMessage } from 'react-intl'
 
 import styles from './styles.css'
 
-const noop = (e: any) => { e.stopPropagation() }
-
 interface Props {
   stores: SkuPickupStore[]
   selectedAddressId: string | undefined
   onPickupChange: (pickup?: FavoritePickup) => void
   dispatch: DispatchFn
+  minimumItems: number
 }
 
-const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChange, dispatch }) => {
+const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChange, dispatch, minimumItems }) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const { isMobile } = useDevice()
-  if (stores.length <= 3) {
+  if (stores.length <= minimumItems) {
     return null
   }
 
@@ -51,7 +50,7 @@ const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChang
             <div
               className={`w-100 h-100 items-center justify-center overflow-y-auto bg-base ${styles.modalContainer}`}
               style={!isMobile ? { maxHeight: '80vh', maxWidth: '90vw', height: 'auto', width: 'auto' } : {}}
-              onClick={noop}
+              onClick={(e: any) => { e.stopPropagation() }}
             >
               <div className={`flex justify-between items-center ph4 pv5 sticky top-0 bg-base z-999 ${styles.modalHeader}`}>
                 <div className="t-body c-muted-2">

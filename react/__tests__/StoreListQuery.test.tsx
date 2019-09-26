@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { render, flushPromises, queryByText } from '@vtex/test-tools/react'
+import { render, flushPromises } from '@vtex/test-tools/react'
 import { clone } from 'ramda'
 import StoreListQuery from '../components/StoreListQuery'
 
@@ -8,7 +8,6 @@ import { getProduct } from '../__mocks__/productMock'
 import ProductContextProvider from '../__mocks__/vtex.product-context/ProductContextProvider'
 
 import logisticsQuery from '../queries/logistics.gql'
-import sessionQuery from '../queries/sessionQuery.gql'
 import skuPickupSLAs from '../queries/skuPickupSLAs.gql'
 
 const TestComponent: FC<any> = ({ product, skuSelector, coords, selectedAddressId, onPickupChange, dispatch }) => (
@@ -263,7 +262,7 @@ test('should render store list properly, show top three only and see all button'
     }
   }
 
-  const { getByText, container } = renderComponent({
+  const { queryByText, getByText } = renderComponent({
     mocks: [logisticsMock, skuPickupsMock]
   })
 
@@ -282,7 +281,7 @@ test('should render store list properly, show top three only and see all button'
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.number))).toBeDefined()
 
   // Fourth element should not be found
-  expect(queryByText(container, new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
+  expect(queryByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
 
   //See all stores button should appear
   expect(getByText(/See all stores/)).toBeDefined()
@@ -431,7 +430,7 @@ test('test that changing coords pased to component reults in a different query a
 
 
 
-  const { getByText, container, rerender } = renderComponent({
+  const { getByText, rerender, queryByText } = renderComponent({
     mocks: [logisticsMock, skuPickupsMock, skuPickupsMockClone]
   })
 
@@ -450,7 +449,7 @@ test('test that changing coords pased to component reults in a different query a
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.number))).toBeDefined()
 
   // Fourth element should not be found
-  expect(queryByText(container, new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
+  expect(queryByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[3].pickupStoreInfo.friendlyName))).toBeNull()
 
   //See all stores button should appear
   expect(getByText(/See all stores/)).toBeDefined()
@@ -464,7 +463,7 @@ test('test that changing coords pased to component reults in a different query a
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
-  expect(queryByText(container, /See all stores/)).toBeNull()
+  expect(queryByText(/See all stores/)).toBeNull()
 })
 
 test('Should render empty list message', async () => {
@@ -503,7 +502,7 @@ test('Should render empty list message', async () => {
     }
   }
 
-  const { getByText, container } = renderComponent({
+  const { getByText, queryByText } = renderComponent({
     mocks: [logisticsMock, skuPickupsMock]
   })
 
@@ -512,5 +511,5 @@ test('Should render empty list message', async () => {
   jest.runAllTimers()
 
   expect(getByText(/Could not find pickup locations near specified address/)).toBeDefined()
-  expect(queryByText(container, /See all stores/)).toBeNull()
+  expect(queryByText(/See all stores/)).toBeNull()
 })

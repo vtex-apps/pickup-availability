@@ -1,7 +1,7 @@
 import React, { FC, useReducer, useCallback, useMemo } from 'react'
 import { Spinner } from 'vtex.styleguide'
 
-import AddressForm from './AddressForm'
+import AddressInput from './AddressInput'
 import StoreListQuery from './StoreListQuery'
 import AddressBarLoader from './Loaders/AddressBarLoader'
 
@@ -93,11 +93,12 @@ const AddressWithList: FC<Props> = ({ googleMapsKey, selectedAddressId, onPickup
 
   return (
     <div>
-      <AddressForm
+      <AddressInput
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&v=3.exp&libraries=places`}
         loadingElement={loadingElement}
         onPlaceSelected={onPlaceSelected}
         onCurrentPositionReceived={onCurrentPositionReceived}
+        googleMapsKey={googleMapsKey}
       />
       <LoadingOverlay loading={state.pickupChangeLoading}>
         <StoreListQuery

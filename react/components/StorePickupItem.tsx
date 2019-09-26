@@ -10,7 +10,12 @@ interface Props {
 
 const StorePickupItem: FC<Props> = ({ store }) => {
   const { pickupStoreInfo: { address, friendlyName }, shippingEstimate } = store
-  const estimate = shippingEstimate && <div className={`${styles.estimateTranslated} ml2`}><TranslateEstimate shippingEstimate={shippingEstimate} isPickup /></div>
+  const estimate = shippingEstimate && (
+    <div className={`${styles.estimateTranslated} ml2`}>
+      <TranslateEstimate shippingEstimate={shippingEstimate} isPickup />
+    </div>
+  )
+
   return (
     <div className={`flex flex-column t-body lh-copy c-muted-2 ${styles.pickupItem}`}>
       <span className={`t-heading-6 c-on-base ${styles.pickupName}`}>{`${friendlyName}`}</span>
@@ -18,7 +23,9 @@ const StorePickupItem: FC<Props> = ({ store }) => {
       <div className={`${shippingEstimate ? styles.pickupEstimate : styles.pickupUnavailable} flex`}>
         {shippingEstimate ? (
           <FormattedMessage id="store/pickup-availability.pickup-estimate" values={{ estimate }} />
-        ) : <FormattedMessage id="store/pickup-availability.pickup-unavailable" />}
+        ) : (
+            <FormattedMessage id="store/pickup-availability.pickup-unavailable" />
+          )}
       </div>
     </div>
   )

@@ -12,6 +12,8 @@ import ItemLoader from './Loaders/ItemLoader'
 
 import styles from './styles.css'
 
+const MAX_ITEMS = 3
+
 interface SkuPickupStoresData {
   skuPickupSLAs: SkuPickupStore[]
 }
@@ -88,7 +90,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
                   <div className={styles.storeList}>
                     <StoreList
                       stores={data.skuPickupSLAs}
-                      maxItems={3}
+                      maxItems={MAX_ITEMS}
                       selectedAddressId={selectedAddressId}
                       onPickupChange={onPickupChange}
                       dispatch={dispatch}
@@ -99,6 +101,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
                     selectedAddressId={selectedAddressId}
                     onPickupChange={onPickupChange}
                     dispatch={dispatch}
+                    minimumItems={MAX_ITEMS}
                   />
                 </Fragment>
               )
