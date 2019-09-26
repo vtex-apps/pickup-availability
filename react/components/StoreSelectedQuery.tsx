@@ -3,6 +3,7 @@ import { Query } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
+import { path } from 'ramda'
 
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
 
@@ -16,7 +17,7 @@ interface SkuPickupSLAData {
 
 interface Variables {
   itemId: string
-  seller: string
+  seller?: string
   lat: string
   long: string
   country: string
@@ -65,7 +66,7 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
       key={selectedItem.itemId}
       variables={{
         itemId: selectedItem.itemId,
-        seller: selectedItem.sellers[0].sellerId,
+        seller: path(['sellers', '0', 'sellerId'], selectedItem),
         lat,
         long,
         country,

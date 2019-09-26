@@ -2,7 +2,7 @@ import React, { FC, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { useRuntime } from 'vtex.render-runtime'
-import { pathOr } from 'ramda'
+import { pathOr, path } from 'ramda'
 import { FormattedMessage } from 'react-intl'
 
 import skuPickupSLAs from '../queries/skuPickupSLAs.gql'
@@ -20,7 +20,7 @@ interface SkuPickupStoresData {
 
 interface Variables {
   itemId: string
-  seller: string
+  seller?: string
   lat: string
   long: string
   country: string
@@ -54,7 +54,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
       query={skuPickupSLAs}
       variables={{
         itemId: selectedItem.itemId,
-        seller: selectedItem.sellers[0].sellerId,
+        seller: path(['sellers', '0', 'sellerId'], selectedItem),
         lat: coords.lat,
         long: coords.long,
         country,
