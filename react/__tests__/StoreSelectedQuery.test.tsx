@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { render, flushPromises, act, fireEvent } from '@vtex/test-tools/react'
 import StoreSelectedQuery from '../components/StoreSelectedQuery'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -30,24 +30,13 @@ const fakeSession = {
   namespaces: {
     public: {
       favoritePickup: {
-        value: {
-          name: 'Pickup Botafogo',
-          address: {
-            street: 'Praia de Botafogo',
-            number: '300',
-            addressId: 'ppbotafogo',
-            state: 'RJ',
-            country: 'BRA',
-            geoCoordinate: [-43, -20],
-            postalCode: '2250040',
-            complement: '',
-            neighborhood: 'Botafogo'
-          }
-        }
+        value: favoritePickup,
       }
     }
   }
 }
+
+const noop = () => { }
 
 const renderComponent = (customProps: any = {}) => {
 
@@ -63,7 +52,7 @@ const renderComponent = (customProps: any = {}) => {
   }
 
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
-    <StoreSelectedQuery pickup={favoritePickup as any} onChangeStoreClick={() => { }} />
+    <StoreSelectedQuery pickup={favoritePickup as any} onChangeStoreClick={customProps.onChangeStoreClick || noop} />
   </ProductContextProvider>, {
     graphql: { mocks: customProps.mocks || [] }
   })
@@ -106,8 +95,11 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
     }
   }
 
+  const onChangeStoreClickFn = jest.fn()
+
   const { getByText } = renderComponent({
-    mocks: [logisticsMock, skuPickupMock]
+    mocks: [logisticsMock, skuPickupMock],
+    onChangeStoreClick: onChangeStoreClickFn,
   })
 
   await flushPromises()
@@ -122,5 +114,8 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.street))).toBeDefined()
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.number))).toBeDefined()
   expect(getByText(/Unavailable for pickup/)).toBeDefined()
-  expect(getByText(/Choose a different store/)).toBeDefined()
+
+  const button = getByText(/Choose a different store/)
+  fireEvent.click(button)
+  expect(onChangeStoreClickFn).toBeCalledTimes(1)
 })
