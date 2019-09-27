@@ -1,8 +1,16 @@
 {
-  "editor.base-store-component.title": "IO Base App",
-  "editor.base-store-component.description": "Un componente de demostración para aplicaciones IO.",
-  "editor.base-store-component.title.title": "Título",
-  "editor.base-store-component.title.description": "Especifique un título personalizado",
-  "base.title": "¡Hola Mundo!",
-  "base.change-value": "Cambia tu valor: {value}"
+  "store/pickup-availability.available-header": "Disponible en:",
+  "store/pickup-availability.input-form-header": "Elija una dirección para encontrar una tienda:",
+  "store/pickup-availability.error-position-message": "Error message displayed when failed to get user position",
+  "store/pickup-availability.availability-header": "Disponibilidad",
+  "store/pickup-availability.select-sku": "Seleccione cualquier SKU arriba para verificar disponibilidad",
+  "store/pickup-availability.select-store": "Elija una tienda para recoger su producto",
+  "store/pickup-availability.input-placeholder": "Buscar una dirección",
+  "store/pickup-availability.empty-list": "No se encontraron ubicaciones de recogida cerca de la dirección que buscó",
+  "store/pickup-availability.pickup-estimate": "Disponible: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "No disponible para retiro",
+  "store/pickup-availability.choose-different": "Elija otra tienda",
+  "store/pickup-availability.available-for-pickup": "Este SKU está disponible para recoger",
+  "store/pickup-availability.choose-store": "Elija una tienda",
+  "store/pickup-availability.see-all": "Ver todas las tiendas"
 }

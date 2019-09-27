@@ -5,3 +5,4 @@ react/**/*.test.js
 react/**/*.test.ts
 react/**/*.test.tsx
 coverage/
+react/**/__snapshots__/**

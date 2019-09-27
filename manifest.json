@@ -1,9 +1,9 @@
 {
   "vendor": "vtex",
-  "name": "base-store-component",
-  "version": "0.0.1",
-  "title": "IO Base Component",
-  "description": "IO Base component",
+  "name": "pickup-availability",
+  "version": "0.0.0",
+  "title": "Pickup Availability",
+  "description": "Find pickup points for selected SKU",
   "defaultLocale": "pt-BR",
   "builders": {
     "messages": "1.x",
@@ -15,6 +15,13 @@
     "postreleasy": "vtex publish --verbose"
   },
   "dependencies": {
-    "vtex.styleguide": "9.x"
-  }
+    "vtex.styleguide": "9.x",
+    "vtex.store-icons": "0.x",
+    "vtex.store-graphql": "2.x",
+    "vtex.product-context": "0.x",
+    "vtex.shipping-estimate-translator": "2.x",
+    "vtex.react-portal": "0.x",
+    "vtex.device-detector": "0.x"
+  },
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

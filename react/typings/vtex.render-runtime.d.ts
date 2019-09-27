@@ -2,15 +2,20 @@
 declare module 'vtex.render-runtime' {
   import { Component, ComponentType, ReactElement, ReactType } from 'react'
 
+  interface Runtime {
+    navigate: (options: NavigationOptions) => void
+    culture: {
+      country: string
+    }
+  }
+
   export interface NavigationOptions {
     page: string
     params?: any
   }
 
   export interface RenderContextProps {
-    runtime: {
-      navigate: (options: NavigationOptions) => void
-    }
+    runtime: Runtime
   }
 
   interface ExtensionPointProps {
@@ -32,7 +37,9 @@ declare module 'vtex.render-runtime' {
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
-  export const withRuntimeContext: <TOriginalProps extends {}>(
+  export const withRuntimeContext: <TOriginalProps extends object>(
     Component: ComponentType<TOriginalProps & RenderContextProps>
   ) => ComponentType<TOriginalProps>
+
+  export const useRuntime: () => Runtime
 }

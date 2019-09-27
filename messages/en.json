@@ -1,8 +1,16 @@
 {
-  "editor.base-store-component.title": "IO Base App",
-  "editor.base-store-component.description": "A demo component for IO apps",
-  "editor.base-store-component.title.title": "Title",
-  "editor.base-store-component.title.description": "Specify a custom title",
-  "base.title": "Hello, World!!",
-  "base.change-value": "Change your value: {value}"
+  "store/pickup-availability.available-header": "Available at:",
+  "store/pickup-availability.input-form-header": "Choose an address to find a store",
+  "store/pickup-availability.error-position-message": "An error occurred when trying to get the device position",
+  "store/pickup-availability.availability-header": "Availability",
+  "store/pickup-availability.select-sku": "Select SKUs above to check availability for pickup",
+  "store/pickup-availability.select-store": "Select a store to pickup your product",
+  "store/pickup-availability.input-placeholder": "Search for an address",
+  "store/pickup-availability.empty-list": "Could not find pickup locations near specified address",
+  "store/pickup-availability.pickup-estimate": "Available: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "Unavailable for pickup",
+  "store/pickup-availability.choose-different": "Choose a different store",
+  "store/pickup-availability.available-for-pickup": "This product is available for pickup.",
+  "store/pickup-availability.choose-store": "Choose store",
+  "store/pickup-availability.see-all": "See all stores"
 }

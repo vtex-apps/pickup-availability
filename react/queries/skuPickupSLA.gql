@@ -1,0 +1,36 @@
+query SkupPickupSLA(
+  $itemId: String
+  $seller: String
+  $lat: String
+  $long: String
+  $country: String
+  $pickupId: String
+) {
+  skuPickupSLA(
+    itemId: $itemId
+    seller: $seller
+    long: $long
+    lat: $lat
+    country: $country
+    pickupId: $pickupId
+  ) {
+    id
+    shippingEstimate
+    pickupStoreInfo {
+      friendlyName
+      address {
+        street
+        number
+        cacheId
+        addressId
+        complement
+        neighborhood
+        country
+        state
+        geoCoordinates
+        postalCode
+        city
+      }
+    }
+  }
+}

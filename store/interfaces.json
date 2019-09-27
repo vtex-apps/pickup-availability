@@ -1,5 +1,5 @@
 {
-  "base-store-component": {
-    "component": "Example"
+  "pickup-availability": {
+    "component": "index"
   }
 }
