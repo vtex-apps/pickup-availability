@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "pickup-availability",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "title": "Pickup Availability",
   "description": "Find pickup points for selected SKU",
   "defaultLocale": "pt-BR",
