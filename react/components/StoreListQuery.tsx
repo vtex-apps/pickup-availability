@@ -4,13 +4,14 @@ import useProduct from 'vtex.product-context/useProduct'
 import { useRuntime } from 'vtex.render-runtime'
 import { pathOr, path } from 'ramda'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import skuPickupSLAs from '../queries/skuPickupSLAs.gql'
 import SeeAllStoresModal from './SeeAllStoresModal'
 import StoreList from './StoreList'
 import ItemLoader from './Loaders/ItemLoader'
 
-import styles from './styles.css'
+const CSS_HANDLES = ['storeListEmptyMessage', 'storeList', 'storeListContainer', 'availableAtHeader'] as const
 
 const MAX_ITEMS = 3
 
@@ -26,8 +27,8 @@ interface Variables {
   country: string
 }
 
-const Wrapper: FC = ({ children }) => (
-  <div className={`flex flex-column flex-grow-1 mv5 ${styles.storeListContainer}`}>
+const Wrapper: FC<{ handles: Record<string, string> }> = ({ children, handles }) => (
+  <div className={`flex flex-column flex-grow-1 mv5 ${handles.storeListContainer}`}>
     {children}
   </div>
 )
@@ -41,6 +42,7 @@ interface Props {
 
 const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, dispatch }) => {
   const { selectedItem } = useProduct()
+  const handles = useCssHandles(CSS_HANDLES)
   const {
     culture: { country },
   } = useRuntime()
@@ -66,8 +68,8 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
         const hasItems = pathOr<number>(0, ['skuPickupSLAs', 'length'], data) > 0
         if (!loading && (error || !hasItems)) {
           return (
-            <Wrapper>
-              <div className={`t-body c-muted-2 ${styles.storeListEmptyMessage}`}>
+            <Wrapper handles={handles}>
+              <div className={`t-body c-muted-2 ${handles.storeListEmptyMessage}`}>
                 <FormattedMessage id="store/pickup-availability.empty-list" />
               </div>
             </Wrapper>
@@ -78,8 +80,8 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
         }
 
         return (
-          <Wrapper>
-            <div className="mb3 c-muted-2 t-body">
+          <Wrapper handles={handles}>
+            <div className={`${handles.availableAtHeader} mb3 c-muted-2 t-body`}>
               <FormattedMessage id="store/pickup-availability.available-header" />
             </div>
             {loading ? (
@@ -87,7 +89,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
             ) :
               (
                 <Fragment>
-                  <div className={styles.storeList}>
+                  <div className={handles.storeList}>
                     <StoreList
                       stores={data.skuPickupSLAs}
                       maxItems={MAX_ITEMS}

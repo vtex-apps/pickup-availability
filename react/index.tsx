@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
 import { graphql, DataValue } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
+import { useCssHandles } from 'vtex.css-handles'
 
-import styles from './components/styles.css'
 import logisticsQuery from './queries/logistics.gql'
 import ContainerStateSelector from './components/ContainerStateSelector'
+
+const CSS_HANDLES = ['container'] as const
 
 type LogisticsResponse = { logistics: { googleMapsKey: string } }
 
@@ -16,13 +18,14 @@ interface InjectedProps {
 
 const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery }) => {
   const { skuSelector } = useProduct()
+  const handles = useCssHandles(CSS_HANDLES)
 
   if (logisticsQuery.loading) {
     return null
   }
 
   return (
-    <div className={styles.container}>
+    <div className={handles.container}>
       <ContainerStateSelector
         showSelectSkuMessage={skuSelector.isVisible && !skuSelector.areAllVariationsSelected}
         googleMapsKey={logisticsQuery.logistics && logisticsQuery.logistics.googleMapsKey}
