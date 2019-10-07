@@ -11,7 +11,7 @@ import skuPickupSLA from '../queries/skuPickupSLA.gql'
 import StorePickupItem from './StorePickupItem'
 import ItemLoader from './Loaders/ItemLoader'
 
-const CSS_HANDLES = ['storeSelectedContainer', 'availabilityHeader', 'chooseDifferentStoreButton'] as const
+const CSS_HANDLES = ['storeSelectedContainer', 'availabilityHeader', 'chooseDifferentStoreButton', 'chooseDifferentStoreButtonText'] as const
 
 interface SkuPickupSLAData {
   skuPickupSLA: SkuPickupStore
@@ -93,7 +93,7 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
             </div>
             <div className={handles.chooseDifferentStoreButton}>
               <Button variation="tertiary" onClick={onChangeStoreClick} size="small">
-                <div className="t-body nh4">
+                <div className={`${handles.chooseDifferentStoreButtonText} t-body nh4`}>
                   <FormattedMessage id="store/pickup-availability.choose-different" />
                 </div>
               </Button>

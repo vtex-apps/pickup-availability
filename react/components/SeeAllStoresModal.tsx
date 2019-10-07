@@ -8,7 +8,7 @@ import { useCssHandles } from 'vtex.css-handles'
 
 import StoreList from './StoreList'
 
-const CSS_HANDLES = ['seeAllModalButton', 'seeAllModalText', 'modalContainer', 'modalHeader', 'modalCloseIcon', 'modalStoreList'] as const
+const CSS_HANDLES = ['seeAllModalButton', 'seeAllModalButtonText', 'modalContainer', 'modalHeader', 'modalCloseIcon', 'modalStoreList'] as const
 
 interface Props {
   stores: SkuPickupStore[]
@@ -30,7 +30,7 @@ const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChang
     return (
       <div className={handles.seeAllModalButton}>
         <Button onClick={() => setModalOpen(true)} variation="tertiary">
-          <div className={`${handles.seeAllModalText} t-body`}>
+          <div className={`${handles.seeAllModalButtonText} t-body`}>
             <FormattedMessage id="store/pickup-availability.see-all" />
           </div>
         </Button>
