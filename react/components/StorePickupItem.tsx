@@ -1,26 +1,28 @@
 import React, { FC } from 'react'
 import TranslateEstimate from 'vtex.shipping-estimate-translator/TranslateEstimate'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
-import styles from './styles.css'
+const CSS_HANDLES = ['estimateTranslated', 'pickupItem', 'pickupName', 'pickupAddress', 'pickupEstimate', 'pickupUnavailable'] as const
 
 interface Props {
   store: SkuPickupStore
 }
 
 const StorePickupItem: FC<Props> = ({ store }) => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { pickupStoreInfo: { address, friendlyName }, shippingEstimate } = store
   const estimate = shippingEstimate && (
-    <div className={`${styles.estimateTranslated} ml2`}>
+    <div className={`${handles.estimateTranslated} ml2`}>
       <TranslateEstimate shippingEstimate={shippingEstimate} isPickup />
     </div>
   )
 
   return (
-    <div className={`flex flex-column t-body lh-copy c-muted-2 ${styles.pickupItem}`}>
-      <span className={`t-heading-6 c-on-base ${styles.pickupName}`}>{`${friendlyName}`}</span>
-      <span className={styles.pickupAddress}>{`${address.street}${address.number ? `, ${address.number}` : ''}`}</span>
-      <div className={`${shippingEstimate ? styles.pickupEstimate : styles.pickupUnavailable} flex`}>
+    <div className={`flex flex-column t-body lh-copy c-muted-2 ${handles.pickupItem}`}>
+      <span className={`t-heading-6 c-on-base ${handles.pickupName}`}>{`${friendlyName}`}</span>
+      <span className={handles.pickupAddress}>{`${address.street}${address.number ? `, ${address.number}` : ''}`}</span>
+      <div className={`${shippingEstimate ? handles.pickupEstimate : handles.pickupUnavailable} flex`}>
         {shippingEstimate ? (
           <FormattedMessage id="store/pickup-availability.pickup-estimate" values={{ estimate }} />
         ) : (

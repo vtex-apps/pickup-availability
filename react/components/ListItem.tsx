@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 import { Radio } from 'vtex.styleguide'
 import StorePickupItem from './StorePickupItem'
+import { useCssHandles, applyModifiers } from 'vtex.css-handles'
 
-import styles from './styles.css'
+const CSS_HANDLES = ['storeListItem'] as const
 
 interface Props {
   isSelected: boolean
@@ -14,11 +15,13 @@ const noop = () => { }
 
 const ListItem: FC<Props> = ({ store, isSelected, onSelectItem }) => {
   const bgColor = isSelected ? 'bg-near-white' : 'bg-base'
+  const handles = useCssHandles(CSS_HANDLES)
+  const classes = applyModifiers(handles.storeListItem, isSelected ? 'selected' : 'unselected')
 
   return (
     <div
       role="button"
-      className={`pointer flex ${bgColor} pa4 bt bb b--muted-4 ph7-l ${styles.storeListItem}`}
+      className={`pointer flex ${bgColor} pa4 bt bb b--muted-4 ph7-l ${classes}`}
       onClick={onSelectItem}
       onKeyDown={e => e.key === 'Enter' && onSelectItem()}
       tabIndex={0}

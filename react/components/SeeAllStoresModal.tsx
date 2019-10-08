@@ -3,11 +3,12 @@ import { Button } from 'vtex.styleguide'
 import { IconClose } from 'vtex.store-icons'
 import { Overlay } from 'vtex.react-portal'
 import { useDevice } from 'vtex.device-detector'
+import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import StoreList from './StoreList'
-import { FormattedMessage } from 'react-intl'
 
-import styles from './styles.css'
+const CSS_HANDLES = ['seeAllModalButton', 'seeAllModalButtonText', 'modalContainer', 'modalHeader', 'modalCloseIcon', 'modalStoreList'] as const
 
 interface Props {
   stores: SkuPickupStore[]
@@ -19,6 +20,7 @@ interface Props {
 
 const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChange, dispatch, minimumItems }) => {
   const [isModalOpen, setModalOpen] = useState(false)
+  const handles = useCssHandles(CSS_HANDLES)
   const { isMobile } = useDevice()
   if (stores.length <= minimumItems) {
     return null
@@ -26,9 +28,9 @@ const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChang
 
   if (!isModalOpen) {
     return (
-      <div className={styles.seeAllModalButton}>
+      <div className={handles.seeAllModalButton}>
         <Button onClick={() => setModalOpen(true)} variation="tertiary">
-          <div className="t-body">
+          <div className={`${handles.seeAllModalButtonText} t-body`}>
             <FormattedMessage id="store/pickup-availability.see-all" />
           </div>
         </Button>
@@ -48,19 +50,19 @@ const SeeAllStoresModal: FC<Props> = ({ stores, selectedAddressId, onPickupChang
             onClick={closeModal}
           >
             <div
-              className={`w-100 h-100 items-center justify-center overflow-y-auto bg-base ${styles.modalContainer}`}
+              className={`w-100 h-100 items-center justify-center overflow-y-auto bg-base ${handles.modalContainer}`}
               style={!isMobile ? { maxHeight: '80vh', maxWidth: '90vw', height: 'auto', width: 'auto' } : {}}
               onClick={(e: any) => { e.stopPropagation() }}
             >
-              <div className={`flex justify-between items-center ph4 pv5 sticky top-0 bg-base z-999 ${styles.modalHeader}`}>
+              <div className={`flex justify-between items-center ph4 pv5 sticky top-0 bg-base z-999 ${handles.modalHeader}`}>
                 <div className="t-body c-muted-2">
                   <FormattedMessage id="store/pickup-availability.select-store" />
                 </div>
-                <div className={`mh4 pointer h-100 justify-center items-center ${styles.modalCloseIcon}`} onClick={closeModal}>
+                <div className={`mh4 pointer h-100 justify-center items-center ${handles.modalCloseIcon}`} onClick={closeModal}>
                   <IconClose size={20} type="line" />
                 </div>
               </div>
-              <div className={styles.modalStoreList}>
+              <div className={handles.modalStoreList}>
                 <StoreList
                   stores={stores}
                   selectedAddressId={selectedAddressId}

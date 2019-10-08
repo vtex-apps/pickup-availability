@@ -21,7 +21,8 @@
     "vtex.product-context": "0.x",
     "vtex.shipping-estimate-translator": "2.x",
     "vtex.react-portal": "0.x",
-    "vtex.device-detector": "0.x"
+    "vtex.device-detector": "0.x",
+    "vtex.css-handles": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
