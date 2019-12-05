@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, flushPromises, act, fireEvent } from '@vtex/test-tools/react'
+import { MockedProvider } from '@apollo/react-testing'
 import StoreSelectedQuery from '../components/StoreSelectedQuery'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -54,7 +55,8 @@ const renderComponent = (customProps: any = {}) => {
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <StoreSelectedQuery pickup={favoritePickup as any} onChangeStoreClick={customProps.onChangeStoreClick || noop} />
   </ProductContextProvider>, {
-    graphql: { mocks: customProps.mocks || [] }
+    graphql: { mocks: customProps.mocks || [] },
+    MockedProvider
   })
 }
 
@@ -102,13 +104,14 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
     onChangeStoreClick: onChangeStoreClickFn,
   })
 
-  await flushPromises()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
-  jest.runAllTimers()
-
-  await act(() => { })
-
-  jest.runAllTimers()
+  await act(() => {
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.name))).toBeDefined()
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.street))).toBeDefined()

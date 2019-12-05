@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { render, flushPromises } from '@vtex/test-tools/react'
+import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { MockedProvider } from '@apollo/react-testing'
 import { clone } from 'ramda'
 import StoreListQuery from '../components/StoreListQuery'
 
@@ -22,7 +23,8 @@ const renderComponent = (customProps: any = {}) => {
   const skuSelector = customProps.skuSelector || { isVisible: false }
 
   const result = render(<TestComponent product={product} skuSelector={skuSelector} coords={customProps.coords || { lat: '-23', long: '-43' }} selectedAddressId={customProps.selectedAddressId} onPickupChange={() => { }} dispatch={() => { }} />, {
-    graphql: { mocks: customProps.mocks || [] }
+    graphql: { mocks: customProps.mocks || [] },
+    MockedProvider
   })
 
   const { rerender } = result
@@ -132,9 +134,10 @@ test('should render store list properly, do not show see all modal', async () =>
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -266,9 +269,10 @@ test('should render store list properly, show top three only and see all button'
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -434,9 +438,10 @@ test('test that changing coords pased to component reults in a different query a
     mocks: [logisticsMock, skuPickupsMock, skuPickupsMockClone]
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -457,8 +462,10 @@ test('test that changing coords pased to component reults in a different query a
   // Switch props
   rerender({ coords: { lat: '-21', long: '-30' } })
 
-  await flushPromises()
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockClone.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
@@ -506,9 +513,10 @@ test('Should render empty list message', async () => {
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(getByText(/Could not find pickup locations near specified address/)).toBeDefined()
   expect(queryByText(/See all stores/)).toBeNull()

@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { MockedProvider } from "@apollo/react-testing"
 import AddressWithList from '../components/AddressWithList'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -61,7 +62,8 @@ const renderComponent = (customProps: any = {}) => {
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <AddressWithList googleMapsKey={'a'} selectedAddressId={'a'} onPickupChange={() => { }} />
   </ProductContextProvider>, {
-    graphql: { mocks: customProps.mocks || [] }
+    graphql: { mocks: customProps.mocks || [] },
+    MockedProvider,
   })
 }
 
@@ -222,24 +224,25 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
     mocks: [logisticsMock, skuPickupMock, skuPickupsMock, skuPickupsMockTwo],
   })
 
-  await flushPromises()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
-  jest.runAllTimers()
+  // await act(() => { })
 
-  await act(() => { })
-
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   //Dispatch 'place_changed' event
   window.dispatchEvent(event)
 
-  await act(() => { })
-
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
 
   expect(currentAutocomplete.eventListening).toBe('place_changed')
 
@@ -256,11 +259,11 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
 
   window.dispatchEvent(event)
 
-  await act(() => { })
-
-  await flushPromises()
-
-  jest.runAllTimers()
+  await act(async () => {
+    await flushPromises()
+    jest.runAllTimers()
+  })
+  
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
