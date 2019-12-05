@@ -71,9 +71,6 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
       </Wrapper>
     )
   }
-  if (!data) {
-    return null
-  }
 
   return (
     <Wrapper handles={handles}>
@@ -87,7 +84,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
           <Fragment>
             <div className={handles.storeList}>
               <StoreList
-                stores={data.skuPickupSLAs}
+                stores={data!.skuPickupSLAs}
                 maxItems={MAX_ITEMS}
                 selectedAddressId={selectedAddressId}
                 onPickupChange={onPickupChange}
@@ -95,7 +92,7 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
               />
             </div>
             <SeeAllStoresModal
-              stores={data.skuPickupSLAs}
+              stores={data!.skuPickupSLAs}
               selectedAddressId={selectedAddressId}
               onPickupChange={onPickupChange}
               dispatch={dispatch}
@@ -104,7 +101,6 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
           </Fragment>
         )
       }
-
     </Wrapper>
   )
 }

@@ -229,8 +229,6 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
     jest.runAllTimers()
   })
 
-  // await act(() => { })
-
   await act(async () => {
     await flushPromises()
     jest.runAllTimers()
@@ -263,7 +261,7 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
     await flushPromises()
     jest.runAllTimers()
   })
-  
+
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()
