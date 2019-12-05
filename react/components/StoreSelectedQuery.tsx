@@ -3,7 +3,6 @@ import { useQuery } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
-import { path } from 'ramda'
 import { useCssHandles } from 'vtex.css-handles'
 
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
@@ -67,7 +66,7 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
     ssr: false,
     variables: {
       itemId: selectedItem.itemId,
-      seller: path(['sellers', '0', 'sellerId'], selectedItem),
+      seller: selectedItem?.sellers?.[0]?.sellerId,
       lat,
       long,
       country,

@@ -1,5 +1,4 @@
 import React, { Fragment, FC } from 'react'
-import { path } from 'ramda'
 import { useMutation } from 'react-apollo'
 
 import savePickupInSessionMutation from '../mutations/savePickupInSession.gql'
@@ -33,7 +32,7 @@ interface Props {
 
 const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, onPickupChange, dispatch, onPressPickup }) => {
   const items = maxItems && stores.length > maxItems ? stores.slice(0, maxItems) : stores
-  const [savePickupInSession] = useMutation<{ favoritePickup: FavoritePickup }, Variables>(savePickupInSessionMutation)
+  const [savePickupInSession] = useMutation<{ savePickupInSession: { favoritePickup: FavoritePickup } }, Variables>(savePickupInSessionMutation)
 
   const saveMutation = (store: SkuPickupStore) => {
     const { address, friendlyName } = store.pickupStoreInfo
@@ -69,7 +68,7 @@ const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, onPickupCha
               dispatch({ type: 'PICKUP_CHANGE_REQUEST' })
               saveMutation(store).then(response => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
-                onPickupChange(path<FavoritePickup>(['data', 'savePickupInSession', 'favoritePickup'], response))
+                onPickupChange(response?.data?.savePickupInSession?.favoritePickup)
               }).catch(() => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
               })

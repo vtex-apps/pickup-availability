@@ -2,7 +2,6 @@ import React, { FC, Fragment } from 'react'
 import { useQuery } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { useRuntime } from 'vtex.render-runtime'
-import { pathOr, path } from 'ramda'
 import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
@@ -55,13 +54,13 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
     ssr: false,
     variables: {
       itemId: selectedItem.itemId,
-      seller: path(['sellers', '0', 'sellerId'], selectedItem),
+      seller: selectedItem?.sellers?.[0]?.sellerId,
       lat: coords.lat,
       long: coords.long,
       country,
     },
   })
-  const hasItems = pathOr<number>(0, ['skuPickupSLAs', 'length'], data) > 0
+  const hasItems = (data?.skuPickupSLAs?.length ?? 0) > 0
   if (!loading && (error || !hasItems)) {
     return (
       <Wrapper handles={handles}>
