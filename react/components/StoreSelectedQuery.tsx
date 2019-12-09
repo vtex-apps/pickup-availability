@@ -17,7 +17,7 @@ interface SkuPickupSLAData {
 }
 
 interface Variables {
-  itemId: string
+  itemId?: string
   seller?: string
   lat: string
   long: string
@@ -58,14 +58,11 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
   const { long, lat, country, pickupId } = getVariablesFromSessionPickup(pickup)
   const handles = useCssHandles(CSS_HANDLES)
 
-  if (!selectedItem) {
-    return null
-  }
-
   const { error, data, loading } = useQuery<SkuPickupSLAData, Variables>(skuPickupSLA, {
     ssr: false,
+    skip: !selectedItem,
     variables: {
-      itemId: selectedItem.itemId,
+      itemId: selectedItem?.itemId,
       seller: selectedItem?.sellers?.[0]?.sellerId,
       lat,
       long,
@@ -74,7 +71,7 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
     }
   })
 
-  if (error) {
+  if (error || !selectedItem) {
     return null
   }
 

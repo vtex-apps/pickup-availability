@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, flushPromises, act, fireEvent } from '@vtex/test-tools/react'
+import { render, wait, fireEvent } from '@vtex/test-tools/react'
 import { MockedProvider } from '@apollo/react-testing'
 import StoreSelectedQuery from '../components/StoreSelectedQuery'
 
@@ -60,9 +60,11 @@ const renderComponent = (customProps: any = {}) => {
   })
 }
 
-test('should render unavailable pickup properly if no sku pickup was found', async () => {
+beforeEach(() => {
   jest.useFakeTimers()
+})
 
+test('should render unavailable pickup properly if no sku pickup was found', async () => {
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -104,12 +106,7 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
     onChangeStoreClick: onChangeStoreClickFn,
   })
 
-  await act(async () => {
-    await flushPromises()
-    jest.runAllTimers()
-  })
-
-  await act(() => {
+  await wait(() => {
     jest.runAllTimers()
   })
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { render, wait } from '@vtex/test-tools/react'
 import { MockedProvider } from "@apollo/react-testing"
 import Index from '../index'
 
@@ -52,13 +52,18 @@ const renderComponent = (customProps: any = {}) => {
   })
 }
 
-test('should render choose store view when no favorite pickup in session', async () => {
+beforeEach(() => {
   jest.useFakeTimers()
+})
 
+// afterEach(() => {
+//   jest.runAllTimers()
+// })
+
+test('should render choose store view when no favorite pickup in session', async () => {
   const { getByText } = renderComponent()
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -67,14 +72,11 @@ test('should render choose store view when no favorite pickup in session', async
 })
 
 test('should render select sku message if sku selector is invalid state', async () => {
-  jest.useFakeTimers()
-
   const { getByText } = renderComponent({
     skuSelector: { isVisible: true, areAllVariationsSelected: false }
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -82,14 +84,11 @@ test('should render select sku message if sku selector is invalid state', async 
 })
 
 test('should render properly if sku selector is visible and valid', async () => {
-  jest.useFakeTimers()
-
   const { getByText } = renderComponent({
     skuSelector: { isVisible: true, areAllVariationsSelected: true }
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -98,8 +97,6 @@ test('should render properly if sku selector is visible and valid', async () => 
 })
 
 test('should render store selected component with shipping estimate properly', async () => {
-  jest.useFakeTimers()
-
   const sessionMock = {
     id: 'a',
     namespaces: {
@@ -171,14 +168,14 @@ test('should render store selected component with shipping estimate properly', a
     otherMocks,
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
-  await act(() => {
+  await wait(() => {
     jest.runAllTimers()
   })
+
 
   expect(getByText(new RegExp(skuPickupMock.result.data.skuPickupSLA.pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupMock.result.data.skuPickupSLA.pickupStoreInfo.address.street))).toBeDefined()

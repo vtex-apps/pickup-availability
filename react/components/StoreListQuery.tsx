@@ -19,11 +19,11 @@ interface SkuPickupStoresData {
 }
 
 interface Variables {
-  itemId: string
-  seller?: string
-  lat: string
-  long: string
-  country: string
+  itemId?: string | null
+  seller?: string | null
+  lat?: string | null
+  long?: string | null
+  country?: string | null
 }
 
 const Wrapper: FC<{ handles: Record<string, string> }> = ({ children, handles }) => (
@@ -39,6 +39,10 @@ interface Props {
   dispatch: DispatchFn
 }
 
+// const getSafeVariables = (coords: Coords, selectedItem: SelectedItem | null ) => {
+
+// }
+
 const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, dispatch }) => {
   const { selectedItem } = useProduct()
   const handles = useCssHandles(CSS_HANDLES)
@@ -46,20 +50,24 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
     culture: { country },
   } = useRuntime()
 
-  if (!coords.lat || !coords.long || !selectedItem) {
-    return null
-  }
+  const validVars = coords.lat && coords.long && selectedItem
 
   const { data, loading, error } = useQuery<SkuPickupStoresData, Variables>(skuPickupSLAs, {
     ssr: false,
+    skip: !validVars,
     variables: {
-      itemId: selectedItem.itemId,
+      itemId: selectedItem?.itemId,
       seller: selectedItem?.sellers?.[0]?.sellerId,
       lat: coords.lat,
       long: coords.long,
       country,
     },
   })
+
+  if (!coords.lat || !coords.long || !selectedItem) {
+    return null
+  }
+
   const hasItems = (data?.skuPickupSLAs?.length ?? 0) > 0
   if (!loading && (error || !hasItems)) {
     return (

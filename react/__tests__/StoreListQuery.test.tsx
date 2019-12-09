@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { render, wait } from '@vtex/test-tools/react'
 import { MockedProvider } from '@apollo/react-testing'
 import { clone } from 'ramda'
 import StoreListQuery from '../components/StoreListQuery'
@@ -35,9 +35,11 @@ const renderComponent = (customProps: any = {}) => {
   }
 }
 
-test('should render store list properly, do not show see all modal', async () => {
+beforeEach(() => {
   jest.useFakeTimers()
+})
 
+test('should render store list properly, do not show see all modal', async () => {
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -134,8 +136,7 @@ test('should render store list properly, do not show see all modal', async () =>
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -151,8 +152,6 @@ test('should render store list properly, do not show see all modal', async () =>
 })
 
 test('should render store list properly, show top three only and see all button', async () => {
-  jest.useFakeTimers()
-
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -269,8 +268,7 @@ test('should render store list properly, show top three only and see all button'
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -292,8 +290,6 @@ test('should render store list properly, show top three only and see all button'
 })
 
 test('test that changing coords pased to component reults in a different query and works flawless', async () => {
-  jest.useFakeTimers()
-
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -438,8 +434,7 @@ test('test that changing coords pased to component reults in a different query a
     mocks: [logisticsMock, skuPickupsMock, skuPickupsMockClone]
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -462,8 +457,7 @@ test('test that changing coords pased to component reults in a different query a
   // Switch props
   rerender({ coords: { lat: '-21', long: '-30' } })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
@@ -513,8 +507,7 @@ test('Should render empty list message', async () => {
     mocks: [logisticsMock, skuPickupsMock]
   })
 
-  await act(async () => {
-    await flushPromises()
+  await wait(() => {
     jest.runAllTimers()
   })
 
