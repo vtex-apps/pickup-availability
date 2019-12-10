@@ -514,3 +514,129 @@ test('Should render empty list message', async () => {
   expect(getByText(/Could not find pickup locations near specified address/)).toBeDefined()
   expect(queryByText(/See all stores/)).toBeNull()
 })
+
+test('ensure loader is appearing when loading is true', async () => {
+  const logisticsMock = {
+    request: {
+      query: logisticsQuery,
+    },
+    result: {
+      loading: false,
+      data: {
+        logistics: {
+          googleMapsKey: 'aaaaa',
+        }
+      }
+    }
+  }
+
+  const skuPickupsMock = {
+    request: {
+      query: skuPickupSLAs,
+      variables: {
+        itemId: '1',
+        seller: '1',
+        lat: '-23',
+        long: '-43',
+        country: 'BRA',
+      }
+    },
+    result: {
+      loading: false,
+      data: {
+        skuPickupSLAs: [{
+          id: 'ppbotafogo',
+          shippingEstimate: '30m',
+          pickupStoreInfo: {
+            friendlyName: 'Pickup Botafogo',
+            address: {
+              cacheId: 'a',
+              street: 'Praia de Botafogo',
+              number: '300',
+              addressId: 'ppbotafogo',
+              state: 'RJ',
+              country: 'BRA',
+              geoCoordinates: [-43, -20],
+              postalCode: '2250040',
+              complement: '',
+              neighborhood: 'Botafogo',
+              city: 'Rio de Janeiro'
+            }
+          }
+        },
+        {
+          id: 'ppipanema',
+          shippingEstimate: '30m',
+          pickupStoreInfo: {
+            friendlyName: 'Pickup Ipanema',
+            address: {
+              cacheId: 'a',
+              street: 'Praia de Ipanema',
+              number: '302',
+              addressId: 'ppipanema',
+              state: 'RJ',
+              country: 'BRA',
+              geoCoordinates: [-43, -20],
+              postalCode: '2250040',
+              complement: '',
+              neighborhood: 'Ipanema',
+              city: 'Rio de Janeiro'
+            }
+          }
+        },
+        {
+          id: 'ppleblon',
+          shippingEstimate: '30m',
+          pickupStoreInfo: {
+            friendlyName: 'Pickup Leblon',
+            address: {
+              cacheId: 'a',
+              street: 'Praia de Leblon',
+              number: '303',
+              addressId: 'ppleblon',
+              state: 'RJ',
+              country: 'BRA',
+              geoCoordinates: [-43, -20],
+              postalCode: '2250040',
+              complement: '',
+              neighborhood: 'Leblon',
+              city: 'Rio de Janeiro'
+            }
+          }
+        },
+        {
+          id: 'ppgloria',
+          shippingEstimate: '30m',
+          pickupStoreInfo: {
+            friendlyName: 'Pickup Gloria',
+            address: {
+              cacheId: 'a',
+              street: 'Praia de Gloria',
+              number: '304',
+              addressId: 'ppgloria',
+              state: 'RJ',
+              country: 'BRA',
+              geoCoordinates: [-43, -20],
+              postalCode: '2250040',
+              complement: '',
+              neighborhood: 'Gloria',
+              city: 'Rio de Janeiro'
+            }
+          }
+        }],
+      }
+    }
+  }
+
+  const { getByTestId, queryByTestId } = renderComponent({
+    mocks: [logisticsMock, skuPickupsMock]
+  })
+
+  getByTestId('item-loader')
+
+  await wait(() => {
+    jest.runAllTimers()
+  })
+
+  expect(queryByTestId('item-loader')).toBe(null)
+})

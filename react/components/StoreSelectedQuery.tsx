@@ -72,9 +72,12 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
   })
 
   if (error || !selectedItem) {
-    return null
+    console.log('teste selected item:', error)
+    return <div>erro</div>
   }
+  // console.log('teste OI', loading)
 
+  // return <div>hello</div>
   const store = !loading && data && data.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
   return (
     <div className={`flex flex-column ${handles.storeSelectedContainer}`}>

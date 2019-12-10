@@ -116,6 +116,53 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
   expect(getByText(/Unavailable for pickup/)).toBeDefined()
 
   const button = getByText(/Choose a different store/)
-  fireEvent.click(button)
+  await wait(() => {
+    fireEvent.click(button)
+  })
   expect(onChangeStoreClickFn).toBeCalledTimes(1)
+})
+
+test('should render item loader when loading is true', async () => {
+  const logisticsMock = {
+    request: {
+      query: logisticsQuery,
+    },
+    result: {
+      loading: false,
+      data: {
+        logistics: {
+          googleMapsKey: 'aaaaa',
+        }
+      }
+    }
+  }
+
+  const skuPickupMock = {
+    request: {
+      query: skuPickupSLA,
+      variables: {
+        itemId: '1',
+        seller: '1',
+        lat: '-20',
+        long: '-43',
+        country: 'BRA',
+        pickupId: 'ppbotafogo'
+      }
+    },
+    result: {
+      loading: false,
+      data: {
+        skuPickupSLA: null,
+      }
+    }
+  }
+
+  const { getByTestId, queryByTestId } = renderComponent({
+    mocks: [logisticsMock, skuPickupMock],
+  })
+  getByTestId('item-loader')
+  await wait(() => {
+    jest.runAllTimers()
+  })
+  expect(queryByTestId('item-loader')).toBe(null)
 })

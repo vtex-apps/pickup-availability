@@ -7,7 +7,7 @@ const ItemLoader: FC = () => {
 
   if (!canShow) {
     return (
-      <div className="w-100" style={{ height: 80 }} />
+      <div className="w-100" style={{ height: 80 }} data-testid="item-loader" />
     )
   }
 
