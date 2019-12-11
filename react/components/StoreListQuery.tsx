@@ -39,10 +39,6 @@ interface Props {
   dispatch: DispatchFn
 }
 
-// const getSafeVariables = (coords: Coords, selectedItem: SelectedItem | null ) => {
-
-// }
-
 const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, dispatch }) => {
   const { selectedItem } = useProduct()
   const handles = useCssHandles(CSS_HANDLES)

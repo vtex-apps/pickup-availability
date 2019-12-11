@@ -56,10 +56,6 @@ beforeEach(() => {
   jest.useFakeTimers()
 })
 
-// afterEach(() => {
-//   jest.runAllTimers()
-// })
-
 test('should render choose store view when no favorite pickup in session', async () => {
   const { getByText } = renderComponent()
 
