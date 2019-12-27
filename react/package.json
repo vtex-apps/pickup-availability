@@ -38,5 +38,6 @@
   },
   "vtexTestTools": {
     "defaultLocale": "pt-BR"
-  }
+  },
+  "version": "0.0.3"
 }
