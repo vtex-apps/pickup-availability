@@ -1,8 +1,7 @@
 import React, { FC, Fragment } from 'react'
-import { Query } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { useRuntime } from 'vtex.render-runtime'
-import { pathOr, path } from 'ramda'
 import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
@@ -20,11 +19,11 @@ interface SkuPickupStoresData {
 }
 
 interface Variables {
-  itemId: string
-  seller?: string
-  lat: string
-  long: string
-  country: string
+  itemId?: string | null
+  seller?: string | null
+  lat?: string | null
+  long?: string | null
+  country?: string | null
 }
 
 const Wrapper: FC<{ handles: Record<string, string> }> = ({ children, handles }) => (
@@ -47,72 +46,69 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
     culture: { country },
   } = useRuntime()
 
+  const validVars = coords.lat && coords.long && selectedItem
+
+  const { data, loading, error } = useQuery<SkuPickupStoresData, Variables>(skuPickupSLAs, {
+    ssr: false,
+    skip: !validVars,
+    variables: {
+      itemId: selectedItem?.itemId,
+      seller: selectedItem?.sellers?.[0]?.sellerId,
+      lat: coords.lat,
+      long: coords.long,
+      country,
+    },
+  })
+
   if (!coords.lat || !coords.long || !selectedItem) {
     return null
   }
 
+  const hasItems = (data?.skuPickupSLAs?.length ?? 0) > 0
+  if (!loading && (error || !hasItems)) {
+    return (
+      <Wrapper handles={handles}>
+        <div className={`t-body c-muted-2 ${handles.storeListEmptyMessage}`}>
+          <FormattedMessage id="store/pickup-availability.empty-list" />
+        </div>
+      </Wrapper>
+    )
+  }
+
+  const Header = (
+    <div className={`${handles.availableAtHeader} mb3 c-muted-2 t-body`}>
+      <FormattedMessage id="store/pickup-availability.available-header" />
+    </div>
+  )
+
   return (
-    <Query<SkuPickupStoresData, Variables>
-      query={skuPickupSLAs}
-      variables={{
-        itemId: selectedItem.itemId,
-        seller: path(['sellers', '0', 'sellerId'], selectedItem),
-        lat: coords.lat,
-        long: coords.long,
-        country,
-      }}
-      partialRefetch
-      ssr={false}
-    >
-      {({ data, loading, error }) => {
-        const hasItems = pathOr<number>(0, ['skuPickupSLAs', 'length'], data) > 0
-        if (!loading && (error || !hasItems)) {
-          return (
-            <Wrapper handles={handles}>
-              <div className={`t-body c-muted-2 ${handles.storeListEmptyMessage}`}>
-                <FormattedMessage id="store/pickup-availability.empty-list" />
-              </div>
-            </Wrapper>
-          )
-        }
-        if (!data) {
-          return null
-        }
-
-        return (
-          <Wrapper handles={handles}>
-            <div className={`${handles.availableAtHeader} mb3 c-muted-2 t-body`}>
-              <FormattedMessage id="store/pickup-availability.available-header" />
+    <Wrapper handles={handles}>
+      {loading ? (
+        <ItemLoader header={Header} />
+      ) :
+        (
+          <Fragment>
+            {Header}
+            <div className={handles.storeList}>
+              <StoreList
+                stores={data!.skuPickupSLAs}
+                maxItems={MAX_ITEMS}
+                selectedAddressId={selectedAddressId}
+                onPickupChange={onPickupChange}
+                dispatch={dispatch}
+              />
             </div>
-            {loading ? (
-              <ItemLoader />
-            ) :
-              (
-                <Fragment>
-                  <div className={handles.storeList}>
-                    <StoreList
-                      stores={data.skuPickupSLAs}
-                      maxItems={MAX_ITEMS}
-                      selectedAddressId={selectedAddressId}
-                      onPickupChange={onPickupChange}
-                      dispatch={dispatch}
-                    />
-                  </div>
-                  <SeeAllStoresModal
-                    stores={data.skuPickupSLAs}
-                    selectedAddressId={selectedAddressId}
-                    onPickupChange={onPickupChange}
-                    dispatch={dispatch}
-                    minimumItems={MAX_ITEMS}
-                  />
-                </Fragment>
-              )
-            }
-
-          </Wrapper>
+            <SeeAllStoresModal
+              stores={data!.skuPickupSLAs}
+              selectedAddressId={selectedAddressId}
+              onPickupChange={onPickupChange}
+              dispatch={dispatch}
+              minimumItems={MAX_ITEMS}
+            />
+          </Fragment>
         )
-      }}
-    </Query>
+      }
+    </Wrapper>
   )
 }
 

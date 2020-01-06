@@ -1,9 +1,8 @@
 import React, { FC } from 'react'
-import { Query } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import useProduct from 'vtex.product-context/useProduct'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
-import { path } from 'ramda'
 import { useCssHandles } from 'vtex.css-handles'
 
 import skuPickupSLA from '../queries/skuPickupSLA.gql'
@@ -18,7 +17,7 @@ interface SkuPickupSLAData {
 }
 
 interface Variables {
-  itemId: string
+  itemId?: string
   seller?: string
   lat: string
   long: string
@@ -59,49 +58,39 @@ const StoreSelectedQuery: FC<Props> = ({ pickup, onChangeStoreClick }) => {
   const { long, lat, country, pickupId } = getVariablesFromSessionPickup(pickup)
   const handles = useCssHandles(CSS_HANDLES)
 
-  if (!selectedItem) {
+  const { error, data, loading } = useQuery<SkuPickupSLAData, Variables>(skuPickupSLA, {
+    ssr: false,
+    skip: !selectedItem,
+    variables: {
+      itemId: selectedItem?.itemId,
+      seller: selectedItem?.sellers?.[0]?.sellerId,
+      lat,
+      long,
+      country,
+      pickupId,
+    }
+  })
+
+  if (error || !selectedItem) {
     return null
   }
-
+  const store = !loading && data?.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
   return (
-    <Query<SkuPickupSLAData, Variables>
-      query={skuPickupSLA}
-      key={selectedItem.itemId}
-      variables={{
-        itemId: selectedItem.itemId,
-        seller: path(['sellers', '0', 'sellerId'], selectedItem),
-        lat,
-        long,
-        country,
-        pickupId,
-      }}
-      ssr={false}
-    >
-      {({ error, data, loading }) => {
-        if (error || !data) {
-          return null
-        }
-
-        const store = data.skuPickupSLA ? data.skuPickupSLA : createSlaFromSessionPickup(pickup)
-        return (
-          <div className={`flex flex-column ${handles.storeSelectedContainer}`}>
-            <div className="mh2">
-              <div className={`t-body c-muted-2 mv3 ${handles.availabilityHeader}`}>
-                <FormattedMessage id="store/pickup-availability.availability-header" />
-              </div>
-              {!loading ? <StorePickupItem store={store} /> : <ItemLoader />}
-            </div>
-            <div className={handles.chooseDifferentStoreButton}>
-              <Button variation="tertiary" onClick={onChangeStoreClick} size="small">
-                <div className={`${handles.chooseDifferentStoreButtonText} t-body nh4`}>
-                  <FormattedMessage id="store/pickup-availability.choose-different" />
-                </div>
-              </Button>
-            </div>
+    <div className={`flex flex-column ${handles.storeSelectedContainer}`}>
+      <div className="mh2">
+        <div className={`t-body c-muted-2 mv3 ${handles.availabilityHeader}`}>
+          <FormattedMessage id="store/pickup-availability.availability-header" />
+        </div>
+        {!loading ? <StorePickupItem store={store} /> : <ItemLoader />}
+      </div>
+      <div className={handles.chooseDifferentStoreButton}>
+        <Button variation="tertiary" onClick={onChangeStoreClick} size="small">
+          <div className={`${handles.chooseDifferentStoreButtonText} t-body nh4`}>
+            <FormattedMessage id="store/pickup-availability.choose-different" />
           </div>
-        )
-      }}
-    </Query>
+        </Button>
+      </div>
+    </div>
   )
 }
 

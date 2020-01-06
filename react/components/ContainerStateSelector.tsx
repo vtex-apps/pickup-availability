@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
-import { path } from 'ramda'
 
 import SelectSkuMessage from './SelectSkuMessage'
 import StoreSelectedQuery from './StoreSelectedQuery'
@@ -20,7 +19,7 @@ function usePickupFromSession() {
     const sessionPromise = (window as any).__RENDER_8_SESSION__.sessionPromise
     if (sessionPromise) {
       sessionPromise.then((data: SessionData) => {
-        const favoritePickupData = path<SessionPickup>(['response', 'namespaces', 'public', 'favoritePickup', 'value'], data)
+        const favoritePickupData = data?.response?.namespaces?.public?.favoritePickup?.value
         if (!favoritePickupData) {
           return
         }
@@ -63,7 +62,7 @@ const ContainerStateSelector: FC<Props> = ({ showSelectSkuMessage, googleMapsKey
     return (
       <AddressWithList
         googleMapsKey={googleMapsKey}
-        selectedAddressId={path<string>(['address', 'addressId'], favoritePickup)}
+        selectedAddressId={favoritePickup?.address?.addressId}
         onPickupChange={(pickup?: FavoritePickup) => {
           setShowForm(false)
           setFavoritePickup(pickup)

@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, flushPromises, act, fireEvent } from '@vtex/test-tools/react'
+import { render, wait, fireEvent } from '@vtex/test-tools/react'
+import { MockedProvider } from '@apollo/react-testing'
 import StoreSelectedQuery from '../components/StoreSelectedQuery'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -54,13 +55,16 @@ const renderComponent = (customProps: any = {}) => {
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <StoreSelectedQuery pickup={favoritePickup as any} onChangeStoreClick={customProps.onChangeStoreClick || noop} />
   </ProductContextProvider>, {
-    graphql: { mocks: customProps.mocks || [] }
+    graphql: { mocks: customProps.mocks || [] },
+    MockedProvider
   })
 }
 
-test('should render unavailable pickup properly if no sku pickup was found', async () => {
+beforeEach(() => {
   jest.useFakeTimers()
+})
 
+test('should render unavailable pickup properly if no sku pickup was found', async () => {
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -102,13 +106,9 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
     onChangeStoreClick: onChangeStoreClickFn,
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
-
-  await act(() => { })
-
-  jest.runAllTimers()
+  await wait(() => {
+    jest.runAllTimers()
+  })
 
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.name))).toBeDefined()
   expect(getByText(new RegExp(fakeSession.namespaces.public.favoritePickup.value.address.street))).toBeDefined()
@@ -116,6 +116,53 @@ test('should render unavailable pickup properly if no sku pickup was found', asy
   expect(getByText(/Unavailable for pickup/)).toBeDefined()
 
   const button = getByText(/Choose a different store/)
-  fireEvent.click(button)
+  await wait(() => {
+    fireEvent.click(button)
+  })
   expect(onChangeStoreClickFn).toBeCalledTimes(1)
+})
+
+test('should render item loader when loading is true', async () => {
+  const logisticsMock = {
+    request: {
+      query: logisticsQuery,
+    },
+    result: {
+      loading: false,
+      data: {
+        logistics: {
+          googleMapsKey: 'aaaaa',
+        }
+      }
+    }
+  }
+
+  const skuPickupMock = {
+    request: {
+      query: skuPickupSLA,
+      variables: {
+        itemId: '1',
+        seller: '1',
+        lat: '-20',
+        long: '-43',
+        country: 'BRA',
+        pickupId: 'ppbotafogo'
+      }
+    },
+    result: {
+      loading: false,
+      data: {
+        skuPickupSLA: null,
+      }
+    }
+  }
+
+  const { getByTestId, queryByTestId } = renderComponent({
+    mocks: [logisticsMock, skuPickupMock],
+  })
+  getByTestId('item-loader')
+  await wait(() => {
+    jest.runAllTimers()
+  })
+  expect(queryByTestId('item-loader')).toBe(null)
 })

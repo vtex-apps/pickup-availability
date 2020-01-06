@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, flushPromises, act } from '@vtex/test-tools/react'
+import { render, wait } from '@vtex/test-tools/react'
+import { MockedProvider } from '@apollo/react-testing'
 import AddressWithList from '../components/AddressWithList'
 
 import { getProduct } from '../__mocks__/productMock'
@@ -45,6 +46,10 @@ jest.mock('react-google-maps', () => {
   }
 })
 
+beforeEach(() => {
+  jest.useFakeTimers()
+})
+
 const renderComponent = (customProps: any = {}) => {
 
   const product = customProps.product || getProduct()
@@ -61,13 +66,12 @@ const renderComponent = (customProps: any = {}) => {
   return render(<ProductContextProvider product={product} skuSelector={skuSelector}>
     <AddressWithList googleMapsKey={'a'} selectedAddressId={'a'} onPickupChange={() => { }} />
   </ProductContextProvider>, {
-    graphql: { mocks: customProps.mocks || [] }
+    graphql: { mocks: customProps.mocks || [] },
+    MockedProvider,
   })
 }
 
 test('test place_changed event dispatch triggering and changing coordinas, making store list render pickup list', async () => {
-  jest.useFakeTimers()
-
   const logisticsMock = {
     request: {
       query: logisticsQuery,
@@ -222,24 +226,18 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
     mocks: [logisticsMock, skuPickupMock, skuPickupsMock, skuPickupsMockTwo],
   })
 
-  await flushPromises()
-
-  jest.runAllTimers()
-
-  await act(() => { })
-
-  await flushPromises()
-
-  jest.runAllTimers()
+  await wait(() => {
+    jest.runAllTimers()
+  })
 
   //Dispatch 'place_changed' event
-  window.dispatchEvent(event)
+  await wait(() => {
+    window.dispatchEvent(event)
+  })
 
-  await act(() => { })
-
-  await flushPromises()
-
-  jest.runAllTimers()
+  await wait(() => {
+    jest.runAllTimers()
+  })
 
   expect(currentAutocomplete.eventListening).toBe('place_changed')
 
@@ -254,13 +252,14 @@ test('test place_changed event dispatch triggering and changing coordinas, makin
   expect(getByText(new RegExp(skuPickupsMock.result.data.skuPickupSLAs[2].pickupStoreInfo.address.number))).toBeDefined()
 
 
-  window.dispatchEvent(event)
+  await wait(() => {
+    window.dispatchEvent(event)
+  })
 
-  await act(() => { })
+  await wait(() => {
+    jest.runAllTimers()
+  })
 
-  await flushPromises()
-
-  jest.runAllTimers()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.friendlyName))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.street))).toBeDefined()
   expect(getByText(new RegExp(skuPickupsMockTwo.result.data.skuPickupSLAs[0].pickupStoreInfo.address.number))).toBeDefined()

@@ -1,11 +1,9 @@
 import React, { Fragment, FC } from 'react'
-import { path } from 'ramda'
-import { graphql, MutationFunc } from 'react-apollo'
+import { useMutation } from 'react-apollo'
 
-import savePickupInSession from '../mutations/savePickupInSession.gql'
+import savePickupInSessionMutation from '../mutations/savePickupInSession.gql'
 
 import ListItem from './ListItem'
-
 
 interface Variables {
   name: string
@@ -22,20 +20,19 @@ interface Variables {
     geoCoordinates: [number, number]
   }
 }
-type SavePickupMutation = MutationFunc<{ favoritePickup: FavoritePickup }, Variables>
 
 interface Props {
   stores: SkuPickupStore[]
   maxItems?: number
   selectedAddressId: string | undefined
-  savePickupInSession: SavePickupMutation
   onPickupChange: (pickup?: FavoritePickup) => void
   dispatch: DispatchFn
   onPressPickup?: () => void
 }
 
-const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupInSession, onPickupChange, dispatch, onPressPickup }) => {
+const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, onPickupChange, dispatch, onPressPickup }) => {
   const items = maxItems && stores.length > maxItems ? stores.slice(0, maxItems) : stores
+  const [savePickupInSession] = useMutation<{ savePickupInSession: { favoritePickup: FavoritePickup } }, Variables>(savePickupInSessionMutation)
 
   const saveMutation = (store: SkuPickupStore) => {
     const { address, friendlyName } = store.pickupStoreInfo
@@ -71,7 +68,7 @@ const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupI
               dispatch({ type: 'PICKUP_CHANGE_REQUEST' })
               saveMutation(store).then(response => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
-                onPickupChange(path<FavoritePickup>(['data', 'savePickupInSession', 'favoritePickup'], response))
+                onPickupChange(response?.data?.savePickupInSession?.favoritePickup)
               }).catch(() => {
                 dispatch({ type: 'PICKUP_CHANGE_DONE' })
               })
@@ -83,4 +80,4 @@ const StoreList: FC<Props> = ({ stores, maxItems, selectedAddressId, savePickupI
   )
 }
 
-export default graphql<any>(savePickupInSession, { name: 'savePickupInSession' })(StoreList)
+export default StoreList
