@@ -75,16 +75,20 @@ const StoreListQuery: FC<Props> = ({ coords, selectedAddressId, onPickupChange, 
     )
   }
 
+  const Header = (
+    <div className={`${handles.availableAtHeader} mb3 c-muted-2 t-body`}>
+      <FormattedMessage id="store/pickup-availability.available-header" />
+    </div>
+  )
+
   return (
     <Wrapper handles={handles}>
-      <div className={`${handles.availableAtHeader} mb3 c-muted-2 t-body`}>
-        <FormattedMessage id="store/pickup-availability.available-header" />
-      </div>
       {loading ? (
-        <ItemLoader />
+        <ItemLoader header={Header} />
       ) :
         (
           <Fragment>
+            {Header}
             <div className={handles.storeList}>
               <StoreList
                 stores={data!.skuPickupSLAs}
