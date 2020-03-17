@@ -1,10 +1,19 @@
 import React, { FC, useState, useEffect } from 'react'
 import { Button } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import SelectSkuMessage from './SelectSkuMessage'
 import StoreSelectedQuery from './StoreSelectedQuery'
 import AddressWithList from './AddressWithList'
+
+const CSS_HANDLES = [
+  'innerContainer',
+  'availabilityHeader',
+  'availabilityMessage',
+  'availabilityChooseStoreText',
+  'availabilityChooseStoreButton',
+] as const
 
 interface Props {
   googleMapsKey?: string
@@ -12,14 +21,17 @@ interface Props {
 }
 
 function usePickupFromSession() {
-  const [favoritePickup, setFavoritePickup] = useState<FavoritePickup | undefined>(undefined)
+  const [favoritePickup, setFavoritePickup] = useState<
+    FavoritePickup | undefined
+  >(undefined)
 
   useEffect(() => {
     let isCurrent = true
     const sessionPromise = (window as any).__RENDER_8_SESSION__.sessionPromise
     if (sessionPromise) {
       sessionPromise.then((data: SessionData) => {
-        const favoritePickupData = data?.response?.namespaces?.public?.favoritePickup?.value
+        const favoritePickupData =
+          data?.response?.namespaces?.public?.favoritePickup?.value
         if (!favoritePickupData) {
           return
         }
@@ -28,7 +40,10 @@ function usePickupFromSession() {
         const { geoCoordinate, ...rest } = address
 
         if (isCurrent) {
-          setFavoritePickup({ name, address: { ...rest, geoCoordinates: geoCoordinate } })
+          setFavoritePickup({
+            name,
+            address: { ...rest, geoCoordinates: geoCoordinate },
+          })
         }
       })
     }
@@ -40,8 +55,11 @@ function usePickupFromSession() {
   return { favoritePickup, setFavoritePickup }
 }
 
-
-const ContainerStateSelector: FC<Props> = ({ showSelectSkuMessage, googleMapsKey }) => {
+const ContainerStateSelector: FC<Props> = ({
+  showSelectSkuMessage,
+  googleMapsKey,
+}) => {
+  const handles = useCssHandles(CSS_HANDLES)
   const [showAddressForm, setShowForm] = useState(false)
   const { favoritePickup, setFavoritePickup } = usePickupFromSession()
 
@@ -72,16 +90,18 @@ const ContainerStateSelector: FC<Props> = ({ showSelectSkuMessage, googleMapsKey
   }
 
   return (
-    <div className="flex flex-column">
-      <div className="c-muted-2 t-body mb1 ml3">
+    <div className={`${handles.innerContainer} flex flex-column`}>
+      <div className={`${handles.availabilityHeader} c-muted-2 t-body mb1 ml3`}>
         <FormattedMessage id="store/pickup-availability.availability-header" />
       </div>
-      <div className="c-on-base t-body mb1 ml3 mt3">
+      <div
+        className={`${handles.availabilityMessage} c-on-base t-body mb1 ml3 mt3`}
+      >
         <FormattedMessage id="store/pickup-availability.available-for-pickup" />
       </div>
-      <div>
+      <div className={`${handles.availabilityChooseStoreButton}`}>
         <Button onClick={() => setShowForm(true)} variation="tertiary">
-          <div className="t-body nh5">
+          <div className={`${handles.availabilityChooseStoreText} t-body nh5`}>
             <FormattedMessage id="store/pickup-availability.choose-store" />
           </div>
         </Button>
