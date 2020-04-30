@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- New CSS Handler to the pickup estimate time in Store List.
+
 ## [0.1.0] - 2020-03-17
 
 ### Added
