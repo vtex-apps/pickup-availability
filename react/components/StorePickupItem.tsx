@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import TranslateEstimate from 'vtex.shipping-estimate-translator/TranslateEstimate'
 import { FormattedMessage } from 'react-intl'
-import { useCssHandles } from 'vtex.css-handles'
+import { applyModifiers, useCssHandles } from 'vtex.css-handles'
 
 const CSS_HANDLES = ['estimateTranslated', 'pickupItem', 'pickupName', 'pickupAddress', 'pickupEstimate', 'pickupUnavailable'] as const
 
@@ -22,7 +22,9 @@ const StorePickupItem: FC<Props> = ({ store }) => {
     <div className={`flex flex-column t-body lh-copy c-muted-2 ${handles.pickupItem}`}>
       <span className={`t-heading-6 c-on-base ${handles.pickupName}`}>{`${friendlyName}`}</span>
       <span className={handles.pickupAddress}>{`${address.street}${address.number ? `, ${address.number}` : ''}`}</span>
-      <div className={`${shippingEstimate ? handles.pickupEstimate : handles.pickupUnavailable} flex`}>
+      <div className={`${shippingEstimate ?
+        applyModifiers(handles.pickupEstimate, shippingEstimate) :
+        handles.pickupUnavailable} flex`}>
         {shippingEstimate ? (
           <FormattedMessage id="store/pickup-availability.pickup-estimate" values={{ estimate }} />
         ) : (
