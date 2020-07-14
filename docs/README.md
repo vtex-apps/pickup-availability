@@ -7,6 +7,12 @@
 Use this component to check the availability in-store pickup for selected SKU.
 This component uses the `ProductContext` and is meant to be used inside the `store.product` block.
 
+## Configuration
+
+| Prop name               | Type      | Description                                                                       | Default value        |
+| ----------------------- | --------- | --------------------------------------------------------------------------------- | -------------------- |
+| `initialOpen`           | `boolean` | Makes the component open by default, without having to click on the button.       | `false`              |
+
 #### Customization
 
 In order to apply CSS customizations on this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).

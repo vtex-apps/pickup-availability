@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-07-14
+
+### Added
+- Prop for the component already starting open
+
 ## [0.2.0] - 2020-05-06
 
 ### Added

@@ -14,9 +14,10 @@ type LogisticsQuery = DataValue<LogisticsResponse>
 
 interface InjectedProps {
   logisticsQuery: LogisticsQuery
+  initialOpen: boolean
 }
 
-const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery }) => {
+const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery, initialOpen }) => {
   const { skuSelector } = useProduct()
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -29,6 +30,7 @@ const StorePickup: FC<{} & InjectedProps> = ({ logisticsQuery }) => {
       <ContainerStateSelector
         showSelectSkuMessage={skuSelector.isVisible && !skuSelector.areAllVariationsSelected}
         googleMapsKey={logisticsQuery.logistics && logisticsQuery.logistics.googleMapsKey}
+        initialOpen={initialOpen}
       />
     </div>
   )
