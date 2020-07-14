@@ -18,6 +18,7 @@ const CSS_HANDLES = [
 interface Props {
   googleMapsKey?: string
   showSelectSkuMessage: boolean
+  initialOpen: boolean
 }
 
 function usePickupFromSession() {
@@ -58,9 +59,10 @@ function usePickupFromSession() {
 const ContainerStateSelector: FC<Props> = ({
   showSelectSkuMessage,
   googleMapsKey,
+  initialOpen
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
-  const [showAddressForm, setShowForm] = useState(false)
+  const [showAddressForm, setShowForm] = useState(initialOpen)
   const { favoritePickup, setFavoritePickup } = usePickupFromSession()
 
   if (showSelectSkuMessage) {
