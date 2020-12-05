@@ -2,10 +2,12 @@ import React, { Fragment, PureComponent } from 'react'
 import { withScriptjs, WithScriptjsProps } from 'react-google-maps'
 import { withRuntimeContext, RenderContextProps } from 'vtex.render-runtime'
 import ReactGoogleAutocomplete from './ReactGooogleAutocomplete'
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl'
+import { injectIntl, InjectedIntlProps } from 'react-intl'
+import AddressInputMessage from './AddressInputMessage'
 
 const GEOLOCATION_TIMEOUT = 30 * 1000
 const MAXIMUM_AGE = 3 * 1000
+
 
 const getCurrentPositionPromise = (): Promise<Position> => {
   const geolocationOptions = {
@@ -110,9 +112,7 @@ class AddressInput extends PureComponent<Props & WithScriptjsProps & RenderConte
 
     return (
       <Fragment>
-        <div className="t-body c-on-base mv4">
-          <FormattedMessage id="store/pickup-availability.input-form-header" />
-        </div>
+        <AddressInputMessage />
         <ReactGoogleAutocomplete
           isLoading={false}
           isFetchingPosition={this.state.isFetchingPosition}
