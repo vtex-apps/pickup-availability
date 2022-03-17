@@ -1,0 +1,16 @@
+{
+  "store/pickup-availability.available-header": "متاح في:",
+  "store/pickup-availability.input-form-header": "اختر عنوانا للعثور على متجر",
+  "store/pickup-availability.error-position-message": "حدث خطأ عند محاولة الحصول على موضع الجهاز",
+  "store/pickup-availability.availability-header": "التوافر",
+  "store/pickup-availability.select-sku": "حدد SKUs أعلاه للتحقق من التوافر للاستلام",
+  "store/pickup-availability.select-store": "حدد متجر للحصول على المنتج الخاص بك",
+  "store/pickup-availability.input-placeholder": "بحث عن عنوان",
+  "store/pickup-availability.empty-list": "تعذر العثور على مواقع الاستلام بالقرب من عنوان محدد",
+  "store/pickup-availability.pickup-estimate": "متوفر: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "غير متوفر للاستلام",
+  "store/pickup-availability.choose-different": "اختر متجرًا مختلفًا",
+  "store/pickup-availability.available-for-pickup": "هذا المنتج متوفر لأخذ العروض.",
+  "store/pickup-availability.choose-store": "اختيار المتجر",
+  "store/pickup-availability.see-all": "مشاهدة جميع المتاجر"
+}
