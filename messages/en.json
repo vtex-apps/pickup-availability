@@ -4,7 +4,7 @@
   "store/pickup-availability.error-position-message": "An error occurred when trying to get the device location",
   "store/pickup-availability.availability-header": "Availability",
   "store/pickup-availability.select-sku": "Select one of the SKUs above to check availability for pickup",
-  "store/pickup-availability.select-store": "Select a store to pick up your product",
+  "store/pickup-availability.select-store": "Select a store to pick up your order",
   "store/pickup-availability.input-placeholder": "Search address",
   "store/pickup-availability.empty-list": "Could not find pickup locations near the specified address",
   "store/pickup-availability.pickup-estimate": "Available: {estimate}",
