@@ -1,0 +1,16 @@
+{
+  "store/pickup-availability.available-header": "Tersedia di:",
+  "store/pickup-availability.input-form-header": "Pilih alamat untuk menemukan toko",
+  "store/pickup-availability.error-position-message": "Terjadi kesalahan saat mencoba mendapatkan posisi perangkat",
+  "store/pickup-availability.availability-header": "Ketersediaan",
+  "store/pickup-availability.select-sku": "Pilih SKU di atas untuk memeriksa layanan pengambilan di toko",
+  "store/pickup-availability.select-store": "Pilih toko untuk mengambil produk Anda",
+  "store/pickup-availability.input-placeholder": "Cari alamat",
+  "store/pickup-availability.empty-list": "Tidak dapat menemukan lokasi pengambilan di dekat alamat yang disebutkan",
+  "store/pickup-availability.pickup-estimate": "Tersedia: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "Tidak tersedia untuk pengambilan",
+  "store/pickup-availability.choose-different": "Pilih toko lain",
+  "store/pickup-availability.available-for-pickup": "Produk ini tersedia untuk diambil.",
+  "store/pickup-availability.choose-store": "Pilih toko",
+  "store/pickup-availability.see-all": "Lihat semua toko"
+}
