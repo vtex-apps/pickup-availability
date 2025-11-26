@@ -42,7 +42,7 @@ Declare the `pickup-availability` block in the desired product template, such as
 
 ## Customization
 
-To apply CSS customizations on this and other blocks, you can use the following CSS Handles. For detailed instructions, see the guide [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
+To apply CSS customizations to this and other blocks, follow the instructions in [Using CSS Handles for store customization](https://developers.vtex.com/docs/guides/vtex-io-documentation-using-css-handles-for-store-customization).
 
 | CSS Handles                         |
 | ------------------------------------|
