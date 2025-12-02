@@ -6,7 +6,7 @@
 
 [<i class="fa-brands fa-github"></i> Source code](https://github.com/vtex-apps/pickup-availability)
 
-The Pickup Availability app allows you to add a component to your store's product pages that displays in-store pickup availability for a selected SKU. This helps customers quickly see if they can collect an item from a physical store.
+The Pickup Availability app allows you to add a component to your store's product pages that displays in-store pickup availability for a selected SKU. This allows customers to check whether the item can be collected at a physical store.
 
 >ℹ️ This component uses the [`ProductContext`](https://developers.vtex.com/docs/apps/vtex.product-context) app and should be implemented inside the `store.product` block. 
 
@@ -56,7 +56,7 @@ To apply CSS customizations to this and other blocks, follow the instructions in
 
 ## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
