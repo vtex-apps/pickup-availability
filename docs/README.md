@@ -4,12 +4,45 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Use this component to check the availability in-store pickup for selected SKU.
-This component uses the `ProductContext` and is meant to be used inside the `store.product` block.
+[<i class="fa-brands fa-github"></i> Source code](https://github.com/vtex-apps/pickup-availability)
 
-#### Customization
+The Pickup Availability app allows you to add a component to your store's product pages that displays in-store pickup availability for a selected SKU. This allows customers to check whether the item can be collected at a physical store.
 
-In order to apply CSS customizations on this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
+>ℹ️ This component uses the [`ProductContext`](https://developers.vtex.com/docs/apps/vtex.product-context) app and should be implemented inside the `store.product` block. 
+
+## Before you begin
+
+Make sure you have configured in-store pickup for your store, including pickup points and shipping policies.
+
+## Installation
+
+1. Open your [Store theme](https://developers.vtex.com/docs/guides/vtex-io-documentation-store-theme) project in a code editor.
+2. In the terminal, [install](https://developers.vtex.com/docs/guides/vtex-io-documentation-installing-an-app) the `pickup-availability` app in your account by running the `vtex install vtex.pickup-availability` command.
+3. Add the `pickup-availability` app to your theme's `manifest.json` file under `peerDependencies`:
+
+  ```json
+  "peerDependencies": {
+    	"vtex.pickup-availability": "0.x"
+  }
+  ```
+## Configuration
+
+Declare the `pickup-availability` block in the desired product template, such as `store.product`. For example:
+
+```json
+"store.product": {
+  "children": [
+      "flex-layout.row#product-main",
+      "flex-layout.row#description",
+      "shelf.relatedProducts",
+      "pickup-availability"
+    ]
+ },
+```
+
+## Customization
+
+To apply CSS customizations to this and other blocks, follow the instructions in [Using CSS Handles for store customization](https://developers.vtex.com/docs/guides/vtex-io-documentation-using-css-handles-for-store-customization).
 
 | CSS Handles                         |
 | ------------------------------------|
@@ -21,9 +54,9 @@ In order to apply CSS customizations on this and other blocks, follow the instru
 | `innerContainer`                    |
 | `shippingEstimate[--]{timeModifier}`|
 
-## Contributors ✨
+## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
