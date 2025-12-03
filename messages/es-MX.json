@@ -1,0 +1,16 @@
+{
+  "store/pickup-availability.available-header": "Disponible en:",
+  "store/pickup-availability.input-form-header": "Selecciona una dirección para encontrar una tienda",
+  "store/pickup-availability.error-position-message": "Se produjo un error al intentar obtener la posición del dispositivo",
+  "store/pickup-availability.availability-header": "Disponibilidad",
+  "store/pickup-availability.select-sku": "Selecciona uno de los SKU arriba para comprobar la disponibilidad de recogida",
+  "store/pickup-availability.select-store": "Selecciona una tienda para recoger tu pedido",
+  "store/pickup-availability.input-placeholder": "Buscar una dirección",
+  "store/pickup-availability.empty-list": "No se encontraron ubicaciones de recogida cerca de la dirección que buscó",
+  "store/pickup-availability.pickup-estimate": "Disponible: {estimate}",
+  "store/pickup-availability.pickup-unavailable": "No disponible para recogida",
+  "store/pickup-availability.choose-different": "Selecciona otra tienda",
+  "store/pickup-availability.available-for-pickup": "Este producto está disponible para su recogida.",
+  "store/pickup-availability.choose-store": "Selecciona una tienda",
+  "store/pickup-availability.see-all": "Ver todas las tiendas"
+}
